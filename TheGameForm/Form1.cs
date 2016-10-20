@@ -248,7 +248,7 @@ namespace TheGameForm
 
         private void AnimationTask(RaceResult result, CancellationToken cancellationToken)
         {
-            foreach (var dataPoint in result.PodRacerRaceDataPoints)
+            foreach (var dataPoint in result.RaceDataPoints)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {

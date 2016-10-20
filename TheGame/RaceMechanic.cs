@@ -143,7 +143,7 @@ namespace TheGame
             newPodRacerRaceDataPoint.Position = new Vector(podRacer.Position);
             newPodRacerRaceDataPoint.Heading = podRacer.Heading;
 
-            raceDataPoint.PodRacerRaceDataPoints.Add(newPodRacerRaceDataPoint);
+            raceDataPoint.PodRacerRaceDataPoints.Add(podRacer, newPodRacerRaceDataPoint);
         }
 
         public void EvaluatePreRound()
@@ -341,6 +341,11 @@ namespace TheGame
                     AddPodRacerStateToRaceDataPoints(podRacer);
                 }
             }
+        }
+
+        private void AddPodRacerStateToRaceDataPoints(PodRacer podRacer)
+        {
+            throw new NotImplementedException();
         }
 
         public void EvaluatePostRound()
