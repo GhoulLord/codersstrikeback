@@ -66,14 +66,14 @@ namespace TheGame
 
         private void InitRaceState()
         {
-            RaceState = new RaceState();
+            RaceState = new RaceState(this);
 
             foreach (var team in Teams)
             {
                 RaceState.TeamRaceStates.Add(team, new TeamRaceState());
                 foreach (var podRacer in team.PodRacers)
                 {
-                    RaceState.PodRacerRaceStates.Add(podRacer, new PodRacerRaceState());
+                    RaceState.PodRacerRaceStates.Add(podRacer, new PodRacerRaceState(podRacer));
                 }
             }
         }

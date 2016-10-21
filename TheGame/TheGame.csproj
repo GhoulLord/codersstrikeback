@@ -50,7 +50,6 @@
     <Compile Include="IPodRacerPhysics.cs" />
     <Compile Include="IRaceRules.cs" />
     <Compile Include="PodRacerRoundResult.cs" />
-    <Compile Include="RaceDataPoint.cs" />
     <Compile Include="RoundResult.cs" />
     <Compile Include="PodRacerPhysics.cs" />
     <Compile Include="PodRacerRaceDataPoint.cs" />

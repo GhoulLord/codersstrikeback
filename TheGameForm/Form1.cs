@@ -32,7 +32,7 @@ namespace TheGameForm
 
             InitializeComponent();
 
-            gameArena.SetRace(race);
+            gameArena.SetRaceState(race.RaceState);
         }
 
         protected void InitGame()
@@ -248,14 +248,17 @@ namespace TheGameForm
 
         private void AnimationTask(RaceResult result, CancellationToken cancellationToken)
         {
-            foreach (var dataPoint in result.RaceDataPoints)
+            foreach (var raceState in result.RaceStates)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
                     break;
                 }
 
+                gameArena.SetRaceState(raceState);
+                UpdateUi();
 
+                Thread.Sleep(25);
             }
         }
 

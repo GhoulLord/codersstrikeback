@@ -17,5 +17,19 @@ namespace TheGame
         {
             return string.Format("D:{0} T:{1} S:{2} B:{3}", Destination, Thrust, Shield, Boost);
         }
+
+        public PodRacerCommand Copy()
+        {
+            PodRacerCommand copy;
+
+            copy = new PodRacerCommand();
+
+            copy.Destination = new Vector(Destination);
+            copy.Thrust = Thrust;
+            copy.Shield = Shield;
+            copy.Boost = Boost;
+
+            return copy;
+        }
     }
 }

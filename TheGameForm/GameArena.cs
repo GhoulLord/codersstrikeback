@@ -18,7 +18,9 @@ namespace TheGameForm
 
         Vector origin = new Vector(0, 0);
 
-        Race race = null;
+        RaceState raceState = null;
+
+        Race race { get { return raceState == null ? null : raceState.Race; } }
 
         double scaleFactor = 1;
 
@@ -61,9 +63,9 @@ namespace TheGameForm
             origin = new Vector((int)originX, (int)originY);
         }
 
-        public void SetRace(Race race)
+        public void SetRaceState(RaceState raceState)
         {
-            this.race = race;
+            this.raceState = raceState;
 
             CalculateScaleFactorAndOrigin();
         }
@@ -137,6 +139,16 @@ namespace TheGameForm
             DrawString(podRacer.Position, podRacer.Number.ToString());
         }
 
+        private void PaintPodRacerRaceState(Graphics g, PodRacerRaceState podRacerRaceState)
+        {
+            PaintPodRacer(g, podRacerRaceState.PodRacer);
+
+            if (podRacerRaceState.CurrentCommand != null)
+            {
+                PaintDestination(g, podRacerRaceState.PodRacer, podRacerRaceState.CurrentCommand.Destination);
+            }
+        }
+
         protected void PaintCheckPoint(Graphics g, CheckPoint checkPoint)
         {
             Pen p = new Pen(Color.Black, 1);
@@ -157,25 +169,15 @@ namespace TheGameForm
 
         protected void PaintGameState(Graphics g)
         {
-            if (race == null) return;
+            if (raceState == null) return;
 
             this.g = g;
 
             //DrawString(new Vector(0, 0), string.Format("Round:{0,4}({1,8:0.000})", gs.Round, gs.Time));
 
-            foreach (var podRacer in race.PodRacers)
+            foreach (var podRacerRaceState in raceState.PodRacerRaceStates.Values)
             {
-                PaintPodRacer(g, podRacer);
-                if (race.RaceState != null)
-                {
-                    if (race.RaceState.PodRacerRaceStates.ContainsKey(podRacer))
-                    {
-                        if (race.RaceState.PodRacerRaceStates[podRacer].CurrentCommand != null)
-                        {
-                            PaintDestination(g, podRacer, race.RaceState.PodRacerRaceStates[podRacer].CurrentCommand.Destination);
-                        }
-                    }
-                }
+                PaintPodRacerRaceState(g, podRacerRaceState);
             }
 
             foreach (var checkPoint in race.Arena.CheckPoints)

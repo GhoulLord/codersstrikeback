@@ -15,5 +15,10 @@ namespace TheGame
         {
             Number = number;
         }
+
+        public CheckPoint Copy()
+        {
+            return new CheckPoint(Number, new Vector(Position), Size);
+        }
     }
 }

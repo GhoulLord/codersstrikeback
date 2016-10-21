@@ -18,5 +18,18 @@ namespace TheGame
             FinishedRace = false;
             Disqualified = false;
         }
+
+        public TeamRaceState Copy()
+        {
+            TeamRaceState copy;
+
+            copy = new TeamRaceState();
+
+            copy.Timeout = Timeout;
+            copy.FinishedRace = FinishedRace;
+            copy.Disqualified = Disqualified;
+
+            return copy;
+        }
     }
 }

@@ -36,7 +36,15 @@ namespace TheGame
         {
             Owner = podRacer.Owner;
             Number = podRacer.Number;
+            Pilot = podRacer.Pilot;
+            PodRacerPhysics = podRacer.PodRacerPhysics;
             PureMass = podRacer.PureMass;
+            IsShielded = podRacer.IsShielded;
+        }
+
+        public PodRacer Copy()
+        {
+            return new PodRacer(this);
         }
 
         public void TurnShieldOn()

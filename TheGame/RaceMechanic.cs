@@ -110,40 +110,24 @@ namespace TheGame
                 podRacerRaceStates[podRacer].CurrentCommand = commands[podRacer];
                 raceResult.CommandsForPodRacers[podRacer].Add(commands[podRacer]);
             }
-            RaceDataPoint newRaceDataPoint;
 
-            newRaceDataPoint = new RaceDataPoint();
-            newRaceDataPoint.RoundTime = raceState.Time;
-
-            if (raceResult.RaceDataPoints.Count > 0)
-            {
-                if (raceResult.RaceDataPoints.Last().RoundTime == newRaceDataPoint.RoundTime)
-                {
-                    raceResult.RaceDataPoints.RemoveAt(raceResult.RaceDataPoints.Count - 1);
-                }
-            }
-            raceResult.RaceDataPoints.Add(newRaceDataPoint);
-
-            foreach (var podRacer in podRacers)
-            {
-                AddPodRacerStateToRaceDataPoints(newRaceDataPoint, podRacer);
-            }
+            CopyCurrentRaceStateToRaceResult();
 
             EvaluatePreRound();
             EvaluateRound();
             EvaluatePostRound();
         }
 
-        private void AddPodRacerStateToRaceDataPoints(RaceDataPoint raceDataPoint, PodRacer podRacer)
+        private void CopyCurrentRaceStateToRaceResult()
         {
-            PodRacerRaceDataPoint newPodRacerRaceDataPoint;
-
-            newPodRacerRaceDataPoint = new PodRacerRaceDataPoint();
-            newPodRacerRaceDataPoint.Velocity = new Vector(podRacer.Velocity);
-            newPodRacerRaceDataPoint.Position = new Vector(podRacer.Position);
-            newPodRacerRaceDataPoint.Heading = podRacer.Heading;
-
-            raceDataPoint.PodRacerRaceDataPoints.Add(podRacer, newPodRacerRaceDataPoint);
+            if (raceResult.RaceStates.Count > 0)
+            {
+                if (raceResult.RaceStates.Last().Time == raceState.Time)
+                {
+                    raceResult.RaceStates.RemoveAt(raceResult.RaceStates.Count - 1);
+                }
+            }
+            raceResult.RaceStates.Add(raceState.Copy());
         }
 
         public void EvaluatePreRound()
@@ -336,16 +320,8 @@ namespace TheGame
 
                 raceState.Time += collisionTime;
 
-                foreach (var podRacer in podRacers)
-                {
-                    AddPodRacerStateToRaceDataPoints(podRacer);
-                }
+                CopyCurrentRaceStateToRaceResult();
             }
-        }
-
-        private void AddPodRacerStateToRaceDataPoints(PodRacer podRacer)
-        {
-            throw new NotImplementedException();
         }
 
         public void EvaluatePostRound()
