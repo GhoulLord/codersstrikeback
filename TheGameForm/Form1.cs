@@ -246,9 +246,9 @@ namespace TheGameForm
         Task animationTask = null;
         CancellationTokenSource animationTaskCancellationSource = null;
 
-        private void AnimationTask(RaceResult result, CancellationToken cancellationToken)
+        private void AnimationTask(List<RaceState> raceStates, CancellationToken cancellationToken)
         {
-            foreach (var raceState in result.RaceStates)
+            foreach (var raceState in raceStates)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -258,12 +258,58 @@ namespace TheGameForm
                 gameArena.SetRaceState(raceState);
                 UpdateUi();
 
-                Thread.Sleep(25);
+                Thread.Sleep(2);
             }
         }
 
         Stopwatch benchmarkStopWatch;
-        
+
+        private List<RaceState> GenerateRaceStatesFor25FPS(RaceResult raceResult)
+        {
+            List<RaceState> raceStates;
+
+            raceStates = new List<RaceState>();
+
+            RaceState raceStateA;
+            RaceState raceStateB;
+
+            int raceStateIndex = 0;
+            double time = 0;
+            double stopTime = Math.Ceiling(raceResult.RaceStates.Last().Time);
+
+            int timeIndex = 0;
+
+            while (time < stopTime)            
+            {
+                int frameIndex;
+
+                for (frameIndex = 0; frameIndex < 25; frameIndex++)
+                {
+                    time = timeIndex + frameIndex / 25.0;
+
+                    while (((raceStateIndex + 1) < raceResult.RaceStates.Count) && (time >= raceResult.RaceStates[raceStateIndex + 1].Time))
+                    {
+                        raceStateIndex++;
+                    }
+
+                    RaceState raceStateForFrame;
+
+                    raceStateForFrame = raceResult.RaceStates[raceStateIndex].Copy();
+                    raceStateForFrame.Time = time;
+
+                    //raceStateA = raceResult.RaceStates[raceStateIndex];
+                    //raceStateB = raceResult.RaceStates[raceStateIndex + 1];
+
+                    raceStates.Add(raceStateForFrame);
+                }
+
+                timeIndex++;
+                time = timeIndex;
+            }
+
+            return raceStates;
+        }
+
         private void buttonStartRace_Click(object sender, EventArgs e)
         {
             RaceResult result;
@@ -275,7 +321,10 @@ namespace TheGameForm
             benchmarkStopWatch = new Stopwatch();
             benchmarkStopWatch.Start();
 
-            animationTask = Task.Factory.StartNew(() => { AnimationTask(result, animationTaskCancellationSource.Token); }, animationTaskCancellationSource.Token);
+            List<RaceState> raceStates;
+            raceStates = GenerateRaceStatesFor25FPS(result);
+
+            animationTask = Task.Factory.StartNew(() => { AnimationTask(raceStates, animationTaskCancellationSource.Token); }, animationTaskCancellationSource.Token);
 
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;
