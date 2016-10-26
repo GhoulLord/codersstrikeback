@@ -27,6 +27,26 @@ namespace TheGame
             RoundsFinished = 0;
         }
 
+        public static PodRacerRaceState CreateInterpolation(PodRacerRaceState a, PodRacerRaceState b, double fraction)
+        {
+            PodRacerRaceState interpolation;
+
+            interpolation = new PodRacerRaceState(a.PodRacer);
+
+            Vector positionA = a.PodRacer.Position;
+            Vector positionB = b.PodRacer.Position;
+            Vector interpolatedPosition = positionA + (positionB - positionA) * fraction;
+
+            double headingA = a.PodRacer.Heading;
+            double headingB = b.PodRacer.Heading;
+            double interpolatedHeading = headingA + (headingB - headingA) * fraction;
+
+            interpolation.PodRacer.Position = interpolatedPosition;
+            interpolation.PodRacer.Heading = interpolatedHeading;
+
+            return interpolation;
+        }
+
         public PodRacerRaceState Copy()
         {
             PodRacerRaceState copy;

@@ -258,7 +258,7 @@ namespace TheGameForm
                 gameArena.SetRaceState(raceState);
                 UpdateUi();
 
-                Thread.Sleep(2);
+                //Thread.Sleep(2);
             }
         }
 
@@ -279,6 +279,9 @@ namespace TheGameForm
 
             int timeIndex = 0;
 
+            raceStateA = raceResult.RaceStates[0];
+            raceStateB = raceResult.RaceStates[1];
+
             while (time < stopTime)            
             {
                 int frameIndex;
@@ -290,12 +293,19 @@ namespace TheGameForm
                     while (((raceStateIndex + 1) < raceResult.RaceStates.Count) && (time >= raceResult.RaceStates[raceStateIndex + 1].Time))
                     {
                         raceStateIndex++;
+
+                        if (raceStateIndex < raceResult.RaceStates.Count)
+                        {
+                            raceStateA = raceStateB;
+                            raceStateB = raceResult.RaceStates[raceStateIndex + 1];
+                        }
                     }
 
                     RaceState raceStateForFrame;
 
-                    raceStateForFrame = raceResult.RaceStates[raceStateIndex].Copy();
-                    raceStateForFrame.Time = time;
+                    //raceStateForFrame = raceResult.RaceStates[raceStateIndex].Copy();
+                    //raceStateForFrame.Time = time;
+                    raceStateForFrame = RaceState.CreateInterpolation(raceStateA, raceStateB, time);
 
                     //raceStateA = raceResult.RaceStates[raceStateIndex];
                     //raceStateB = raceResult.RaceStates[raceStateIndex + 1];

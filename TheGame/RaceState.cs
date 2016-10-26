@@ -26,6 +26,24 @@ namespace TheGame
             TeamRaceStates = new Dictionary<Team, TeamRaceState>();
         }
 
+        public static RaceState CreateInterpolation(RaceState a, RaceState b, double time)
+        {
+            RaceState interpolation;
+
+            interpolation = a.Copy();
+
+            List<PodRacer> keys;
+
+            keys = interpolation.PodRacerRaceStates.Keys.ToList();
+
+            foreach (var podRacerRaceStateKeys in keys)
+            {
+                interpolation.PodRacerRaceStates[podRacerRaceStateKeys] = PodRacerRaceState.CreateInterpolation(a.PodRacerRaceStates[podRacerRaceStateKeys], b.PodRacerRaceStates[podRacerRaceStateKeys], (time - a.Time) / (b.Time - a.Time));
+            }
+
+            return interpolation;
+        }
+
         public RaceState Copy()
         {
             RaceState copy;
