@@ -17,7 +17,7 @@ namespace TheGame
         public Arena(int width, int height)
         {
             Width = width;
-            Height = 2 * height;
+            Height = height;
         }
 
         public void AddCheckPoint(CheckPoint checkPoint)
