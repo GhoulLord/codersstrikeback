@@ -134,10 +134,22 @@ namespace TheGame
         {
             foreach (var podRacer in podRacers)
             {
-                HandleDestinationCommandForPodRacer(podRacer);
-                HandleShieldCommandForPodRacer(podRacer);
-                HandleAccelerateCommandsForPodRacer(podRacer);
+                try
+                {
+                    EvaluatePreRoundForPodRacer(podRacer);
+                }
+                catch
+                {
+                    raceState.PodRacerRaceStates[podRacer].Failed = true;
+                }
             }
+        }
+
+        private void EvaluatePreRoundForPodRacer(PodRacer podRacer)
+        {
+            HandleDestinationCommandForPodRacer(podRacer);
+            HandleShieldCommandForPodRacer(podRacer);
+            HandleAccelerateCommandsForPodRacer(podRacer);
         }
 
         private void HandleDestinationCommandForPodRacer(PodRacer podRacer)
@@ -324,29 +336,45 @@ namespace TheGame
             }
         }
 
+        public bool PodRacerIsDisqualified(PodRacer podRacer)
+        {
+            return raceState.PodRacerRaceStates[podRacer].Failed;
+        }
+
+        public bool TeamIsDisqualified(Team team)
+        {
+            bool disqualified = false;
+
+            disqualified =
+                raceState.TeamRaceStates[team].Disqualified | team.PodRacers.All(p => PodRacerIsDisqualified(p));
+
+            return disqualified;
+        }
+
         public void EvaluatePostRound()
         {
             foreach (var podRacer in podRacers)
             {
-                racePodRacerMechanics.ApplyFractionToPodRacer(podRacer);
-                FinalizeRoundForPodRacer(podRacer, raceState.PodRacerRaceStates[podRacer]);
+                EvaluatePostRoundForPodRacer(podRacer);
             }
 
             foreach (var team in teams)
             {
-                FinalizeRoundForPlayer(team, raceState.TeamRaceStates[team]);
-
-                if (raceState.TeamRaceStates[team].Timeout == 0)
+                try
+                {
+                    FinalizeRoundForPlayer(team, raceState.TeamRaceStates[team]);
+                }
+                catch
                 {
                     raceState.TeamRaceStates[team].Disqualified = true;
                 }
             }
 
-            List<KeyValuePair<Team, TeamRaceState>> teamsNotDisqualified = raceState.TeamRaceStates.Where(kvp => kvp.Value.Disqualified == false).ToList();
+            List<Team> teamsNotDisqualified = raceState.TeamRaceStates.Keys.Where(t => TeamIsDisqualified(t) == false).ToList();
 
             if (teamsNotDisqualified.Count == 1)
             {
-                raceResult.WinningTeam = teamsNotDisqualified[0].Key;
+                raceResult.WinningTeam = teamsNotDisqualified[0];
                 raceState.Finished = true;
             }
             else if (teamsNotDisqualified.Count == 0)
@@ -355,6 +383,12 @@ namespace TheGame
             }
 
             raceState.Round++;
+        }
+
+        private void EvaluatePostRoundForPodRacer(PodRacer podRacer)
+        {
+            racePodRacerMechanics.ApplyFractionToPodRacer(podRacer);
+            FinalizeRoundForPodRacer(podRacer, raceState.PodRacerRaceStates[podRacer]);
         }
     }
 }

@@ -65,7 +65,7 @@ namespace TheGameForm
             players.Add(teamB);
 
             pilotTeamA = new PilotA();
-            pilotTeamB = new PilotA();
+            pilotTeamB = new PilotB();
 
             PodRacer podRacerA = null;
             PodRacer podRacerB = null;
@@ -139,7 +139,7 @@ namespace TheGameForm
         {
             race = game.CreateRace(0);
 
-            UpdateUi();
+            UpdateUi(race.RaceState);
         }
 
         private void DoNRounds(int rounds)
@@ -156,26 +156,28 @@ namespace TheGameForm
         {
             race = game.CreateRace(1);
 
-            UpdateUi();
+            UpdateUi(race.RaceState);
         }
 
-        private void UpdateUi()
+        private void UpdateUi(RaceState raceState)
         {
             if (gameArena.InvokeRequired)
             {
-                gameArena.Invoke(new MethodInvoker(() => { UpdateUi(); }));
+                gameArena.Invoke(new MethodInvoker(() => { UpdateUi(raceState); }));
                 return;
             }
 
+            gameArena.SetRaceState(raceState);
+
             gameArena.Refresh();
 
-            labelRound.Text = race.RaceState.Round.ToString();
-            labelTime.Text = string.Format("{0,8:0.000}", race.RaceState.Time);
+            labelRound.Text = raceState.Round.ToString();
+            labelTime.Text = string.Format("{0,8:0.000}", raceState.Time);
 
             //labelPlayerARounds.Text = game.GetGameState().PlayerGameStates[playerA].RoundsFinished.ToString();
-            labelPlayerATimeout.Text = race.RaceState.TeamRaceStates[teamA].Timeout.ToString();
+            labelPlayerATimeout.Text = raceState.TeamRaceStates[teamA].Timeout.ToString();
             //labelPlayerBRounds.Text = game.GetGameState().PlayerGameStates[playerB].RoundsFinished.ToString();
-            labelPlayerBTimeout.Text = race.RaceState.TeamRaceStates[teamB].Timeout.ToString();
+            labelPlayerBTimeout.Text = raceState.TeamRaceStates[teamB].Timeout.ToString();
         }
 
         private void DoOneFrame()
@@ -205,14 +207,14 @@ namespace TheGameForm
 
             result = race.ExecuteRace();
 
-            UpdateUi();
+            UpdateUi(race.RaceState);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             race.ExecuteRace();
 
-            UpdateUi();
+            UpdateUi(race.RaceState);
         }
 
         private void DoOneRound()
@@ -255,8 +257,7 @@ namespace TheGameForm
                     break;
                 }
 
-                gameArena.SetRaceState(raceState);
-                UpdateUi();
+                UpdateUi(raceState);
 
                 //Thread.Sleep(2);
             }
