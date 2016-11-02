@@ -129,7 +129,7 @@ namespace TheGameForm
             {
                 p.Color = Color.Blue;
                 //DrawVector(podRacer.Position, podRacer.Velocity.CreateNormalizedVector() * 1600, p);
-                DrawVector(podRacer.Position, podRacer.Velocity, p);
+                DrawVector(podRacer.Position, podRacer.Velocity * 4, p);
             }
 
             p.Color = Color.Red;

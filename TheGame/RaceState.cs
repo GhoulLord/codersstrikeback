@@ -32,6 +32,8 @@ namespace TheGame
 
             interpolation = a.Copy();
 
+            interpolation.Time = time;
+
             List<PodRacer> keys;
 
             keys = interpolation.PodRacerRaceStates.Keys.ToList();

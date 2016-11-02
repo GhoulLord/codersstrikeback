@@ -70,7 +70,7 @@ namespace TheGameForm
             podRacerA = game.CreatePodRacer(
                 teamA,
                 0,
-                new PilotA(),
+                new PilotC(),
                 new Vector(
                     5000,
                     1000
@@ -132,6 +132,8 @@ namespace TheGameForm
 
         private void buttonInitRace_Click(object sender, EventArgs e)
         {
+            raceStates = null;
+
             race = game.CreateRace(0);
 
             UpdateUi(race.RaceState);
@@ -149,6 +151,8 @@ namespace TheGameForm
 
         private void buttonInitRaceSwapped_Click(object sender, EventArgs e)
         {
+            raceStates = null;
+
             race = game.CreateRace(1);
 
             UpdateUi(race.RaceState);
@@ -175,7 +179,7 @@ namespace TheGameForm
             if (raceState.PodRacerRaceStates[teamA.PodRacers[0]].CurrentCheckPoint != null)
             {
                 labelPlayerACheckpoint1.Text = raceState.PodRacerRaceStates[teamA.PodRacers[0]].CurrentCheckPoint.ToString();
-                //labelPlayerACheckpoint2.Text = raceState.PodRacerRaceStates[teamA.PodRacers[1]].CurrentCheckPoint.ToString();
+                labelPlayerACheckpoint2.Text = raceState.PodRacerRaceStates[teamA.PodRacers[0]].PodRacer.ToString();
             }
             //labelPlayerBRounds.Text = string.Format("{0}/{1}", raceState.PodRacerRaceStates[teamB.PodRacers[0]].RoundsFinished, raceState.PodRacerRaceStates[teamB.PodRacers[1]].RoundsFinished);
             //labelPlayerBTimeout.Text = raceState.TeamRaceStates[teamB].Timeout.ToString();
@@ -207,20 +211,20 @@ namespace TheGameForm
             //UpdateUi();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void buttonNext_Click(object sender, EventArgs e)
         {
-            RaceResult result;
-
-            result = race.ExecuteRace();
-
-            UpdateUi(race.RaceState);
+            if (raceStates != null)
+            {
+                AnimationTaskNext(raceStates);
+            }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void buttonPrev_Click(object sender, EventArgs e)
         {
-            race.ExecuteRace();
-
-            UpdateUi(race.RaceState);
+            if (raceStates != null)
+            {
+                AnimationTaskPrev(raceStates);
+            }
         }
 
         private void DoOneRound()
@@ -242,30 +246,98 @@ namespace TheGameForm
             //}
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        List<RaceState> raceStates = null;
+
+        private void buttonExecuteRace_Click(object sender, EventArgs e)
         {
-            DoNRounds(47);
-            //for (int i = 0; i < 9; i++)
-            //{
-            //    DoOneFrame();
-            //}
+            RaceResult result;
+
+            result = race.ExecuteRace();
+
+            benchmarkStopWatch = new Stopwatch();
+            benchmarkStopWatch.Start();
+
+            raceStates = GenerateRaceStatesFor25FPS(result);
+
+            currentRaceRound = 0;
+            currentRaceStateIndex = 0;
         }
 
         Task animationTask = null;
         CancellationTokenSource animationTaskCancellationSource = null;
 
-        private void AnimationTask(List<RaceState> raceStates, CancellationToken cancellationToken)
+        int currentRaceRound = 0;
+        int currentRaceStateIndex = 0;
+
+        private void AnimationTaskWholeRace(List<RaceState> raceStates, CancellationToken cancellationToken)
         {
-            foreach (var raceState in raceStates)
+            while ((currentRaceStateIndex + 1) < raceStates.Count)
             {
-                if (cancellationToken.IsCancellationRequested)
+                currentRaceStateIndex++;
+
+                UpdateUi(raceStates[currentRaceStateIndex]);
+
+                if (raceStates[currentRaceStateIndex].Round != currentRaceRound)
+                {
+                    currentRaceRound = raceStates[currentRaceStateIndex].Round;
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
+                }
+
+                //Thread.Sleep(2);
+            }
+        }
+
+        private bool IsInteger(double d)
+        {
+            return (Math.Abs(d % 1) < Double.Epsilon);
+        }
+
+        private void AnimationTaskNext(List<RaceState> raceStates)
+        {
+            double currentRaceStateTime = raceStates[currentRaceStateIndex].Time;
+
+            double destinationTime;
+
+            destinationTime = Math.Ceiling(currentRaceStateTime) + 1;
+
+            while ((currentRaceStateIndex + 1) < raceStates.Count)
+            {
+                currentRaceStateIndex++;
+
+                UpdateUi(raceStates[currentRaceStateIndex]);
+
+                currentRaceRound = raceStates[currentRaceStateIndex].Round;
+
+                if (raceStates[currentRaceStateIndex].Time >= destinationTime)
                 {
                     break;
                 }
+            }
+        }
 
-                UpdateUi(raceState);
+        private void AnimationTaskPrev(List<RaceState> raceStates)
+        {
+            double currentRaceStateTime = raceStates[currentRaceStateIndex].Time;
 
-                //Thread.Sleep(2);
+            double destinationTime;
+
+            destinationTime = Math.Floor(currentRaceStateTime) - 1;
+
+            while (currentRaceStateIndex > 0)
+            {
+                currentRaceStateIndex--;
+
+                UpdateUi(raceStates[currentRaceStateIndex]);
+
+                currentRaceRound = raceStates[currentRaceStateIndex].Round;
+
+                if (raceStates[currentRaceStateIndex].Time <= destinationTime)
+                {
+                    break;
+                }
             }
         }
 
@@ -329,19 +401,9 @@ namespace TheGameForm
 
         private void buttonStartRace_Click(object sender, EventArgs e)
         {
-            RaceResult result;
-
-            result = race.ExecuteRace();
-
             animationTaskCancellationSource = new CancellationTokenSource();
 
-            benchmarkStopWatch = new Stopwatch();
-            benchmarkStopWatch.Start();
-
-            List<RaceState> raceStates;
-            raceStates = GenerateRaceStatesFor25FPS(result);
-
-            animationTask = Task.Factory.StartNew(() => { AnimationTask(raceStates, animationTaskCancellationSource.Token); }, animationTaskCancellationSource.Token);
+            animationTask = Task.Factory.StartNew(() => { AnimationTaskWholeRace(raceStates, animationTaskCancellationSource.Token); }, animationTaskCancellationSource.Token);
 
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;

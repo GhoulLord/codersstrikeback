@@ -39,7 +39,16 @@ namespace TheGame
 
             double headingA = a.PodRacer.Heading;
             double headingB = b.PodRacer.Heading;
-            double interpolatedHeading = headingA + (headingB - headingA) * fraction;
+            double headingDiff = headingB - headingA;
+            if (headingDiff < -180)
+            {
+                headingDiff += 360;
+            }
+            if (headingDiff > 180)
+            {
+                headingDiff -= 360;
+            }
+            double interpolatedHeading = headingA + headingDiff * fraction;
 
             interpolation.PodRacer.Position = interpolatedPosition;
             interpolation.PodRacer.Heading = interpolatedHeading;

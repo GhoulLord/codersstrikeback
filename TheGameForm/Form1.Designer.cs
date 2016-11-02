@@ -31,8 +31,12 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.buttonStopRace = new System.Windows.Forms.Button();
             this.buttonStartRace = new System.Windows.Forms.Button();
+            this.labelPlayerBCheckpoint2 = new System.Windows.Forms.Label();
+            this.labelPlayerBCheckpoint1 = new System.Windows.Forms.Label();
             this.labelPlayerBTimeout = new System.Windows.Forms.Label();
             this.labelPlayerBRounds = new System.Windows.Forms.Label();
+            this.labelPlayerACheckpoint2 = new System.Windows.Forms.Label();
+            this.labelPlayerACheckpoint1 = new System.Windows.Forms.Label();
             this.labelPlayerATimeout = new System.Windows.Forms.Label();
             this.labelPlayerARounds = new System.Windows.Forms.Label();
             this.labelTime = new System.Windows.Forms.Label();
@@ -42,16 +46,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonExecuteRace = new System.Windows.Forms.Button();
+            this.buttonPrev = new System.Windows.Forms.Button();
+            this.buttonNext = new System.Windows.Forms.Button();
             this.buttonInitRaceSwapped = new System.Windows.Forms.Button();
             this.buttonInitRace = new System.Windows.Forms.Button();
-            this.labelPlayerACheckpoint1 = new System.Windows.Forms.Label();
-            this.labelPlayerBCheckpoint1 = new System.Windows.Forms.Label();
             this.gameArena = new TheGameForm.GameArena();
-            this.labelPlayerACheckpoint2 = new System.Windows.Forms.Label();
-            this.labelPlayerBCheckpoint2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -88,19 +88,19 @@
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Controls.Add(this.button5);
-            this.splitContainer1.Panel2.Controls.Add(this.button4);
-            this.splitContainer1.Panel2.Controls.Add(this.button3);
+            this.splitContainer1.Panel2.Controls.Add(this.buttonExecuteRace);
+            this.splitContainer1.Panel2.Controls.Add(this.buttonPrev);
+            this.splitContainer1.Panel2.Controls.Add(this.buttonNext);
             this.splitContainer1.Panel2.Controls.Add(this.buttonInitRaceSwapped);
             this.splitContainer1.Panel2.Controls.Add(this.buttonInitRace);
-            this.splitContainer1.Size = new System.Drawing.Size(1059, 676);
+            this.splitContainer1.Size = new System.Drawing.Size(1264, 676);
             this.splitContainer1.SplitterDistance = 800;
             this.splitContainer1.TabIndex = 1;
             // 
             // buttonStopRace
             // 
             this.buttonStopRace.Enabled = false;
-            this.buttonStopRace.Location = new System.Drawing.Point(100, 73);
+            this.buttonStopRace.Location = new System.Drawing.Point(100, 145);
             this.buttonStopRace.Name = "buttonStopRace";
             this.buttonStopRace.Size = new System.Drawing.Size(75, 23);
             this.buttonStopRace.TabIndex = 8;
@@ -117,6 +117,24 @@
             this.buttonStartRace.Text = "start";
             this.buttonStartRace.UseVisualStyleBackColor = true;
             this.buttonStartRace.Click += new System.EventHandler(this.buttonStartRace_Click);
+            // 
+            // labelPlayerBCheckpoint2
+            // 
+            this.labelPlayerBCheckpoint2.AutoSize = true;
+            this.labelPlayerBCheckpoint2.Location = new System.Drawing.Point(59, 532);
+            this.labelPlayerBCheckpoint2.Name = "labelPlayerBCheckpoint2";
+            this.labelPlayerBCheckpoint2.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerBCheckpoint2.TabIndex = 6;
+            this.labelPlayerBCheckpoint2.Text = "label2";
+            // 
+            // labelPlayerBCheckpoint1
+            // 
+            this.labelPlayerBCheckpoint1.AutoSize = true;
+            this.labelPlayerBCheckpoint1.Location = new System.Drawing.Point(59, 510);
+            this.labelPlayerBCheckpoint1.Name = "labelPlayerBCheckpoint1";
+            this.labelPlayerBCheckpoint1.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerBCheckpoint1.TabIndex = 6;
+            this.labelPlayerBCheckpoint1.Text = "label2";
             // 
             // labelPlayerBTimeout
             // 
@@ -135,6 +153,24 @@
             this.labelPlayerBRounds.Size = new System.Drawing.Size(35, 13);
             this.labelPlayerBRounds.TabIndex = 6;
             this.labelPlayerBRounds.Text = "label2";
+            // 
+            // labelPlayerACheckpoint2
+            // 
+            this.labelPlayerACheckpoint2.AutoSize = true;
+            this.labelPlayerACheckpoint2.Location = new System.Drawing.Point(60, 437);
+            this.labelPlayerACheckpoint2.Name = "labelPlayerACheckpoint2";
+            this.labelPlayerACheckpoint2.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerACheckpoint2.TabIndex = 6;
+            this.labelPlayerACheckpoint2.Text = "label2";
+            // 
+            // labelPlayerACheckpoint1
+            // 
+            this.labelPlayerACheckpoint1.AutoSize = true;
+            this.labelPlayerACheckpoint1.Location = new System.Drawing.Point(60, 412);
+            this.labelPlayerACheckpoint1.Name = "labelPlayerACheckpoint1";
+            this.labelPlayerACheckpoint1.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerACheckpoint1.TabIndex = 6;
+            this.labelPlayerACheckpoint1.Text = "label2";
             // 
             // labelPlayerATimeout
             // 
@@ -217,35 +253,35 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Round";
             // 
-            // button5
+            // buttonExecuteRace
             // 
-            this.button5.Location = new System.Drawing.Point(3, 277);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.buttonExecuteRace.Location = new System.Drawing.Point(3, 145);
+            this.buttonExecuteRace.Name = "buttonExecuteRace";
+            this.buttonExecuteRace.Size = new System.Drawing.Size(75, 23);
+            this.buttonExecuteRace.TabIndex = 4;
+            this.buttonExecuteRace.Text = "execute";
+            this.buttonExecuteRace.UseVisualStyleBackColor = true;
+            this.buttonExecuteRace.Click += new System.EventHandler(this.buttonExecuteRace_Click);
             // 
-            // button4
+            // buttonPrev
             // 
-            this.button4.Location = new System.Drawing.Point(3, 213);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "1 round";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.buttonPrev.Location = new System.Drawing.Point(100, 73);
+            this.buttonPrev.Name = "buttonPrev";
+            this.buttonPrev.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrev.TabIndex = 3;
+            this.buttonPrev.Text = "previous";
+            this.buttonPrev.UseVisualStyleBackColor = true;
+            this.buttonPrev.Click += new System.EventHandler(this.buttonPrev_Click);
             // 
-            // button3
+            // buttonNext
             // 
-            this.button3.Location = new System.Drawing.Point(3, 145);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "race no anim";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.buttonNext.Location = new System.Drawing.Point(100, 102);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(75, 23);
+            this.buttonNext.TabIndex = 2;
+            this.buttonNext.Text = "next";
+            this.buttonNext.UseVisualStyleBackColor = true;
+            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
             // 
             // buttonInitRaceSwapped
             // 
@@ -267,24 +303,6 @@
             this.buttonInitRace.UseVisualStyleBackColor = true;
             this.buttonInitRace.Click += new System.EventHandler(this.buttonInitRace_Click);
             // 
-            // labelPlayerACheckpoint1
-            // 
-            this.labelPlayerACheckpoint1.AutoSize = true;
-            this.labelPlayerACheckpoint1.Location = new System.Drawing.Point(60, 412);
-            this.labelPlayerACheckpoint1.Name = "labelPlayerACheckpoint1";
-            this.labelPlayerACheckpoint1.Size = new System.Drawing.Size(35, 13);
-            this.labelPlayerACheckpoint1.TabIndex = 6;
-            this.labelPlayerACheckpoint1.Text = "label2";
-            // 
-            // labelPlayerBCheckpoint1
-            // 
-            this.labelPlayerBCheckpoint1.AutoSize = true;
-            this.labelPlayerBCheckpoint1.Location = new System.Drawing.Point(59, 510);
-            this.labelPlayerBCheckpoint1.Name = "labelPlayerBCheckpoint1";
-            this.labelPlayerBCheckpoint1.Size = new System.Drawing.Size(35, 13);
-            this.labelPlayerBCheckpoint1.TabIndex = 6;
-            this.labelPlayerBCheckpoint1.Text = "label2";
-            // 
             // gameArena
             // 
             this.gameArena.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -293,29 +311,11 @@
             this.gameArena.Size = new System.Drawing.Size(800, 676);
             this.gameArena.TabIndex = 0;
             // 
-            // labelPlayerACheckpoint2
-            // 
-            this.labelPlayerACheckpoint2.AutoSize = true;
-            this.labelPlayerACheckpoint2.Location = new System.Drawing.Point(60, 437);
-            this.labelPlayerACheckpoint2.Name = "labelPlayerACheckpoint2";
-            this.labelPlayerACheckpoint2.Size = new System.Drawing.Size(35, 13);
-            this.labelPlayerACheckpoint2.TabIndex = 6;
-            this.labelPlayerACheckpoint2.Text = "label2";
-            // 
-            // labelPlayerBCheckpoint2
-            // 
-            this.labelPlayerBCheckpoint2.AutoSize = true;
-            this.labelPlayerBCheckpoint2.Location = new System.Drawing.Point(59, 532);
-            this.labelPlayerBCheckpoint2.Name = "labelPlayerBCheckpoint2";
-            this.labelPlayerBCheckpoint2.Size = new System.Drawing.Size(35, 13);
-            this.labelPlayerBCheckpoint2.TabIndex = 6;
-            this.labelPlayerBCheckpoint2.Text = "label2";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1059, 676);
+            this.ClientSize = new System.Drawing.Size(1264, 676);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -334,9 +334,9 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button buttonInitRace;
         private System.Windows.Forms.Button buttonInitRaceSwapped;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button buttonNext;
+        private System.Windows.Forms.Button buttonPrev;
+        private System.Windows.Forms.Button buttonExecuteRace;
         private System.Windows.Forms.Label labelPlayerBRounds;
         private System.Windows.Forms.Label labelPlayerARounds;
         private System.Windows.Forms.Label labelTime;

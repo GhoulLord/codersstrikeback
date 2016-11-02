@@ -13,7 +13,8 @@ namespace TheGame
         virtual public double Thrust { get; set; }
         virtual public double Size { get; set; }
         virtual public double Mass { get; set; }
-        virtual public double Heading { get; set; }
+        private double heading;
+        virtual public double Heading { get { return heading; } set { SetHeading(value); } }
         virtual public Vector Orientation { get { return CalculateOrientationVector(); } }
 
         private Vector CalculateOrientationVector()
@@ -41,18 +42,23 @@ namespace TheGame
             Heading = unit.Heading;
         }
 
+        private void SetHeading(double heading)
+        {
+            if (heading > 360)
+            {
+                heading -= 360;
+            }
+            else if (heading < 0)
+            {
+                heading += 360;
+            }
+
+            this.heading = heading;
+        }
+
         public double Rotate(double angle)
         {
             Heading += angle;
-
-            if (Heading > 360)
-            {
-                Heading -= 360;
-            }
-            else if (Heading < 0)
-            {
-                Heading += 360;
-            }
 
             return Heading;
         }

@@ -23,7 +23,7 @@ namespace Pilots
 
             command = new PodRacerCommand()
             {
-                Thrust = 50,
+                Thrust = 70,
                 Destination = race.
                 RaceState.
                 PodRacerRaceStates[PodRacer].
