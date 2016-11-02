@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.gameArena = new TheGameForm.GameArena();
             this.buttonStopRace = new System.Windows.Forms.Button();
             this.buttonStartRace = new System.Windows.Forms.Button();
             this.labelPlayerBTimeout = new System.Windows.Forms.Label();
@@ -48,6 +47,11 @@
             this.button3 = new System.Windows.Forms.Button();
             this.buttonInitRaceSwapped = new System.Windows.Forms.Button();
             this.buttonInitRace = new System.Windows.Forms.Button();
+            this.labelPlayerACheckpoint1 = new System.Windows.Forms.Label();
+            this.labelPlayerBCheckpoint1 = new System.Windows.Forms.Label();
+            this.gameArena = new TheGameForm.GameArena();
+            this.labelPlayerACheckpoint2 = new System.Windows.Forms.Label();
+            this.labelPlayerBCheckpoint2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -69,8 +73,12 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.buttonStopRace);
             this.splitContainer1.Panel2.Controls.Add(this.buttonStartRace);
+            this.splitContainer1.Panel2.Controls.Add(this.labelPlayerBCheckpoint2);
+            this.splitContainer1.Panel2.Controls.Add(this.labelPlayerBCheckpoint1);
             this.splitContainer1.Panel2.Controls.Add(this.labelPlayerBTimeout);
             this.splitContainer1.Panel2.Controls.Add(this.labelPlayerBRounds);
+            this.splitContainer1.Panel2.Controls.Add(this.labelPlayerACheckpoint2);
+            this.splitContainer1.Panel2.Controls.Add(this.labelPlayerACheckpoint1);
             this.splitContainer1.Panel2.Controls.Add(this.labelPlayerATimeout);
             this.splitContainer1.Panel2.Controls.Add(this.labelPlayerARounds);
             this.splitContainer1.Panel2.Controls.Add(this.labelTime);
@@ -85,17 +93,9 @@
             this.splitContainer1.Panel2.Controls.Add(this.button3);
             this.splitContainer1.Panel2.Controls.Add(this.buttonInitRaceSwapped);
             this.splitContainer1.Panel2.Controls.Add(this.buttonInitRace);
-            this.splitContainer1.Size = new System.Drawing.Size(991, 676);
+            this.splitContainer1.Size = new System.Drawing.Size(1059, 676);
             this.splitContainer1.SplitterDistance = 800;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // gameArena
-            // 
-            this.gameArena.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameArena.Location = new System.Drawing.Point(0, 0);
-            this.gameArena.Name = "gameArena";
-            this.gameArena.Size = new System.Drawing.Size(800, 676);
-            this.gameArena.TabIndex = 0;
             // 
             // buttonStopRace
             // 
@@ -121,7 +121,7 @@
             // labelPlayerBTimeout
             // 
             this.labelPlayerBTimeout.AutoSize = true;
-            this.labelPlayerBTimeout.Location = new System.Drawing.Point(60, 445);
+            this.labelPlayerBTimeout.Location = new System.Drawing.Point(59, 486);
             this.labelPlayerBTimeout.Name = "labelPlayerBTimeout";
             this.labelPlayerBTimeout.Size = new System.Drawing.Size(35, 13);
             this.labelPlayerBTimeout.TabIndex = 6;
@@ -130,7 +130,7 @@
             // labelPlayerBRounds
             // 
             this.labelPlayerBRounds.AutoSize = true;
-            this.labelPlayerBRounds.Location = new System.Drawing.Point(60, 421);
+            this.labelPlayerBRounds.Location = new System.Drawing.Point(59, 462);
             this.labelPlayerBRounds.Name = "labelPlayerBRounds";
             this.labelPlayerBRounds.Size = new System.Drawing.Size(35, 13);
             this.labelPlayerBRounds.TabIndex = 6;
@@ -184,7 +184,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 421);
+            this.label4.Location = new System.Drawing.Point(2, 462);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 13);
             this.label4.TabIndex = 5;
@@ -267,11 +267,55 @@
             this.buttonInitRace.UseVisualStyleBackColor = true;
             this.buttonInitRace.Click += new System.EventHandler(this.buttonInitRace_Click);
             // 
+            // labelPlayerACheckpoint1
+            // 
+            this.labelPlayerACheckpoint1.AutoSize = true;
+            this.labelPlayerACheckpoint1.Location = new System.Drawing.Point(60, 412);
+            this.labelPlayerACheckpoint1.Name = "labelPlayerACheckpoint1";
+            this.labelPlayerACheckpoint1.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerACheckpoint1.TabIndex = 6;
+            this.labelPlayerACheckpoint1.Text = "label2";
+            // 
+            // labelPlayerBCheckpoint1
+            // 
+            this.labelPlayerBCheckpoint1.AutoSize = true;
+            this.labelPlayerBCheckpoint1.Location = new System.Drawing.Point(59, 510);
+            this.labelPlayerBCheckpoint1.Name = "labelPlayerBCheckpoint1";
+            this.labelPlayerBCheckpoint1.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerBCheckpoint1.TabIndex = 6;
+            this.labelPlayerBCheckpoint1.Text = "label2";
+            // 
+            // gameArena
+            // 
+            this.gameArena.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gameArena.Location = new System.Drawing.Point(0, 0);
+            this.gameArena.Name = "gameArena";
+            this.gameArena.Size = new System.Drawing.Size(800, 676);
+            this.gameArena.TabIndex = 0;
+            // 
+            // labelPlayerACheckpoint2
+            // 
+            this.labelPlayerACheckpoint2.AutoSize = true;
+            this.labelPlayerACheckpoint2.Location = new System.Drawing.Point(60, 437);
+            this.labelPlayerACheckpoint2.Name = "labelPlayerACheckpoint2";
+            this.labelPlayerACheckpoint2.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerACheckpoint2.TabIndex = 6;
+            this.labelPlayerACheckpoint2.Text = "label2";
+            // 
+            // labelPlayerBCheckpoint2
+            // 
+            this.labelPlayerBCheckpoint2.AutoSize = true;
+            this.labelPlayerBCheckpoint2.Location = new System.Drawing.Point(59, 532);
+            this.labelPlayerBCheckpoint2.Name = "labelPlayerBCheckpoint2";
+            this.labelPlayerBCheckpoint2.Size = new System.Drawing.Size(35, 13);
+            this.labelPlayerBCheckpoint2.TabIndex = 6;
+            this.labelPlayerBCheckpoint2.Text = "label2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(991, 676);
+            this.ClientSize = new System.Drawing.Size(1059, 676);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -306,6 +350,10 @@
         private System.Windows.Forms.Button buttonStopRace;
         private System.Windows.Forms.Button buttonStartRace;
         private System.Windows.Forms.Label labelBenchmark;
+        private System.Windows.Forms.Label labelPlayerBCheckpoint1;
+        private System.Windows.Forms.Label labelPlayerACheckpoint1;
+        private System.Windows.Forms.Label labelPlayerACheckpoint2;
+        private System.Windows.Forms.Label labelPlayerBCheckpoint2;
     }
 }
 

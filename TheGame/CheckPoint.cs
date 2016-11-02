@@ -20,5 +20,10 @@ namespace TheGame
         {
             return new CheckPoint(Number, new Vector(Position), Size);
         }
+
+        public override string ToString()
+        {
+            return Position.ToString();
+        }
     }
 }

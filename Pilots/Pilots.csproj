@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PilotC.cs" />
     <Compile Include="PilotA.cs" />
     <Compile Include="PilotB.cs" />
     <Compile Include="Player.cs" />

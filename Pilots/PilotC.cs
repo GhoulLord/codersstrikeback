@@ -7,7 +7,7 @@ using TheGame;
 
 namespace Pilots
 {
-    public class PilotB : IPilot
+    public class PilotC : IPilot
     {
         public PodRacer PodRacer { get; set; }
 
@@ -23,7 +23,7 @@ namespace Pilots
 
             command = new PodRacerCommand()
             {
-                Thrust = 100,
+                Thrust = 50,
                 Destination = race.
                 RaceState.
                 PodRacerRaceStates[PodRacer].

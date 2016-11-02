@@ -372,7 +372,7 @@ namespace TheGame
 
             List<Team> teamsNotDisqualified = raceState.TeamRaceStates.Keys.Where(t => TeamIsDisqualified(t) == false).ToList();
 
-            if (teamsNotDisqualified.Count == 1)
+            if ((raceState.TeamRaceStates.Count > 1) && (teamsNotDisqualified.Count == 1))
             {
                 raceResult.WinningTeam = teamsNotDisqualified[0];
                 raceState.Finished = true;

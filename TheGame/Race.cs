@@ -34,11 +34,16 @@ namespace TheGame
             CheckPoint firstTargetCheckPoint = Arena.GetNextCheckPoint(startFinishCheckPoint);
             double maxPodSize = PodRacers.Max(p => p.Size);
 
-            double angleDelta = 2.0 * Math.PI / PodRacers.Count;
-            double alpha = Math.Sqrt(1.0/ (2.0 * (1 - Math.Cos(angleDelta))));
-            double startingPositionOffset = 2 * alpha * maxPodSize;
+            double startingPositionOffset = 0;
 
-            startingPositionOffset += RaceRules.INITIAL_POSITION_OFFSET;
+            if (PodRacers.Count > 1)
+            {
+                double angleDelta = 2.0 * Math.PI / PodRacers.Count;
+                double alpha = Math.Sqrt(1.0/ (2.0 * (1 - Math.Cos(angleDelta))));
+                startingPositionOffset = 2 * alpha * maxPodSize;
+
+                startingPositionOffset += RaceRules.INITIAL_POSITION_OFFSET;
+            }
 
             Vector startingPositionOffsetVector = new Vector(0, startingPositionOffset);
 

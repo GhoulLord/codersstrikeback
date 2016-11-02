@@ -31,7 +31,7 @@ namespace TheGame
         {
             PodRacerRaceState interpolation;
 
-            interpolation = new PodRacerRaceState(a.PodRacer);
+            interpolation = a.Copy();
 
             Vector positionA = a.PodRacer.Position;
             Vector positionB = b.PodRacer.Position;

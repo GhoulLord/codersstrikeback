@@ -19,9 +19,7 @@ namespace TheGameForm
         private Game game = null;
         private Race race = null;
         private Team teamA;
-        private Team teamB;
-        private IPilot pilotTeamA;
-        private IPilot pilotTeamB;
+        //private Team teamB;
         private Dictionary<Team, List<PodRacer>> podRacers = new Dictionary<Team, List<PodRacer>>();
         Dictionary<PodRacer, PodRacerCommand> commands = new Dictionary<PodRacer, PodRacerCommand>();
 
@@ -61,67 +59,64 @@ namespace TheGameForm
 
             teamA = game.CreateTeam("A", Color.Red);
             players.Add(teamA);
-            teamB = game.CreateTeam("B", Color.Green);
-            players.Add(teamB);
-
-            pilotTeamA = new PilotA();
-            pilotTeamB = new PilotB();
+            //teamB = game.CreateTeam("B", Color.Green);
+            //players.Add(teamB);
 
             PodRacer podRacerA = null;
-            PodRacer podRacerB = null;
+            //PodRacer podRacerB = null;
             List<PodRacer> podRacersForPlayer;
 
             podRacersForPlayer = new List<PodRacer>();
             podRacerA = game.CreatePodRacer(
                 teamA,
                 0,
-                pilotTeamA,
+                new PilotA(),
                 new Vector(
                     5000,
                     1000
                 ),
                     90
                     );
-            podRacerB = game.CreatePodRacer(
-                teamA,
-                1,
-                pilotTeamA,
-                new Vector(
-                    5000,
-                    9000
-                ),
-                    270
-                    );
+            //podRacerB = game.CreatePodRacer(
+            //    teamA,
+            //    1,
+            //    new PilotC(),
+            //    new Vector(
+            //        5000,
+            //        9000
+            //    ),
+            //        270
+            //        );
 
             podRacersForPlayer.Add(podRacerA);
-            podRacersForPlayer.Add(podRacerB);
+            //podRacersForPlayer.Add(podRacerB);
             podRacers.Add(teamA, podRacersForPlayer);
 
-            podRacersForPlayer = new List<PodRacer>();
-            podRacerA = game.CreatePodRacer(
-                teamB,
-                2,
-                pilotTeamB,
-                new Vector(
-                    9000,
-                    5000
-                ),
-                    180
-                    );
-            podRacerB = game.CreatePodRacer(
-                teamB,
-                3,
-                pilotTeamB,
-                new Vector(
-                    1000,
-                    5000
-                ),
-                    0
-                    );
+            //podRacersForPlayer = new List<PodRacer>();
+            //podRacerA = game.CreatePodRacer(
+            //    teamB,
+            //    2,
+            //    new PilotB(),
+            //    new Vector(
+            //        9000,
+            //        5000
+            //    ),
+            //        180
+            //        );
+            //podRacerB = game.CreatePodRacer(
+            //    teamB,
+            //    3,
+            //    new PilotC(),
+            //    new Vector(
+            //        1000,
+            //        5000
+            //    ),
+            //        0
+            //        );
 
-            podRacersForPlayer.Add(podRacerA);
-            podRacersForPlayer.Add(podRacerB);
-            podRacers.Add(teamB, podRacersForPlayer);
+            //podRacersForPlayer.Add(podRacerA);
+            //podRacersForPlayer.Add(podRacerB);
+            //podRacers.Add(teamB, podRacersForPlayer);
 
             race = game.CreateRace(0);
 
@@ -174,10 +169,21 @@ namespace TheGameForm
             labelRound.Text = raceState.Round.ToString();
             labelTime.Text = string.Format("{0,8:0.000}", raceState.Time);
 
-            //labelPlayerARounds.Text = game.GetGameState().PlayerGameStates[playerA].RoundsFinished.ToString();
+            //labelPlayerARounds.Text = string.Format("{0}/{1}", raceState.PodRacerRaceStates[teamA.PodRacers[0]].RoundsFinished, raceState.PodRacerRaceStates[teamA.PodRacers[1]].RoundsFinished);
+            labelPlayerARounds.Text = string.Format("{0}", raceState.PodRacerRaceStates[teamA.PodRacers[0]].RoundsFinished);
             labelPlayerATimeout.Text = raceState.TeamRaceStates[teamA].Timeout.ToString();
-            //labelPlayerBRounds.Text = game.GetGameState().PlayerGameStates[playerB].RoundsFinished.ToString();
-            labelPlayerBTimeout.Text = raceState.TeamRaceStates[teamB].Timeout.ToString();
+            if (raceState.PodRacerRaceStates[teamA.PodRacers[0]].CurrentCheckPoint != null)
+            {
+                labelPlayerACheckpoint1.Text = raceState.PodRacerRaceStates[teamA.PodRacers[0]].CurrentCheckPoint.ToString();
+                //labelPlayerACheckpoint2.Text = raceState.PodRacerRaceStates[teamA.PodRacers[1]].CurrentCheckPoint.ToString();
+            }
+            //labelPlayerBRounds.Text = string.Format("{0}/{1}", raceState.PodRacerRaceStates[teamB.PodRacers[0]].RoundsFinished, raceState.PodRacerRaceStates[teamB.PodRacers[1]].RoundsFinished);
+            //labelPlayerBTimeout.Text = raceState.TeamRaceStates[teamB].Timeout.ToString();
+            //if (raceState.PodRacerRaceStates[teamB.PodRacers[0]].CurrentCheckPoint != null)
+            //{
+            //    labelPlayerBCheckpoint1.Text = raceState.PodRacerRaceStates[teamB.PodRacers[0]].CurrentCheckPoint.ToString();
+            //    labelPlayerBCheckpoint2.Text = raceState.PodRacerRaceStates[teamB.PodRacers[1]].CurrentCheckPoint.ToString();
+            //}
         }
 
         private void DoOneFrame()
