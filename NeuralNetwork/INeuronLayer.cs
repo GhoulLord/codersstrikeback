@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
-    [Serializable]
-    public class HiddenNeuron : OutputNeuron
+    public interface INeuronLayer
     {
+        List<Neuron> Neurons { get; set; }
+        
+        void UpdateNeuronsOutput();
     }
 }

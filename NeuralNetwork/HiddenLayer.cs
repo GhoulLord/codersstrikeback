@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
-    public class HiddenLayer : OutputLayer
+    [Serializable]
+    public class HiddenLayer : NeuronLayer<HiddenNeuron>
     {
+        public override HiddenNeuron CreateNeuron()
+        {
+            HiddenNeuron hiddenNeuron;
+
+            hiddenNeuron = new HiddenNeuron();
+
+            Neurons.Add(hiddenNeuron);
+
+            return hiddenNeuron;
+        }
     }
 }

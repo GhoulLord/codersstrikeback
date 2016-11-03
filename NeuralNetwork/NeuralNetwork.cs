@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
+    [Serializable]
     public class NeuralNetwork
     {
         public InputLayer InputLayer { get; set; }
@@ -45,9 +46,49 @@ namespace NeuralNetwork
 
         public void UpdateOutput()
         {
-            InputLayer.UpdateNeuronsOutput();
-            HiddenLayers.ForEach(h => h.UpdateNeuronsOutput());
+            UpdateInputLayerOutput();
+            UpdateHiddenLayerOutput();
+            UpdateOutputLayerOutput();
+        }
+
+        private void CreateFullConnectionsBetweenTwoLayers(INeuronLayer firstLayer, INeuronLayer secondLayer)
+        {
+            foreach (var firstNeuron in firstLayer.Neurons)
+            {
+                foreach (var secondNeuron in secondLayer.Neurons.Cast<OutputNeuron>())
+                {
+                    secondNeuron.CreateAxon(firstNeuron, 0);
+                }
+            }
+        }
+
+        public void CreateFullConnections()
+        {
+            INeuronLayer layerBeforeCurrentLayer = InputLayer;
+
+            foreach (var hiddenLayer in HiddenLayers)
+            {
+                CreateFullConnectionsBetweenTwoLayers(layerBeforeCurrentLayer, hiddenLayer);
+
+                layerBeforeCurrentLayer = hiddenLayer;
+            }
+
+            CreateFullConnectionsBetweenTwoLayers(layerBeforeCurrentLayer, OutputLayer);
+        }
+
+        private void UpdateOutputLayerOutput()
+        {
             OutputLayer.UpdateNeuronsOutput();
+        }
+
+        private void UpdateHiddenLayerOutput()
+        {
+            HiddenLayers.ForEach(h => h.UpdateNeuronsOutput());
+        }
+
+        private void UpdateInputLayerOutput()
+        {
+            InputLayer.UpdateNeuronsOutput();
         }
     }
 }

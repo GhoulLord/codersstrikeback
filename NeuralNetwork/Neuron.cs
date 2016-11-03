@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
+    [Serializable]
     public abstract class Neuron : INeuron
     {
         public double Bias { get; set; }

@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NeuralNetwork\NeuralNetwork.csproj">
+      <Project>{9c404f24-496f-42c0-8e2e-0d9116a0e5e7}</Project>
+      <Name>NeuralNetwork</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TheGame\TheGame.csproj">
       <Project>{730b8935-5e3e-42c5-bb38-f81b37e2b411}</Project>
       <Name>TheGame</Name>

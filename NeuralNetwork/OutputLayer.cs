@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
-    public class OutputLayer : NeuronLayer
+    [Serializable]
+    public class OutputLayer : NeuronLayer<OutputNeuron>
     {
+        public override OutputNeuron CreateNeuron()
+        {
+            OutputNeuron outputNeuron;
+
+            outputNeuron = new OutputNeuron();
+
+            Neurons.Add(outputNeuron);
+
+            return outputNeuron;
+        }
     }
 }

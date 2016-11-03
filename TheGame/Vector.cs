@@ -19,6 +19,12 @@ namespace TheGame
             Y = y;
         }
 
+        public Vector(double length)
+        {
+            X = length;
+            Y = 0;
+        }
+
         public Vector(Vector vector)
         {
             X = vector.X;

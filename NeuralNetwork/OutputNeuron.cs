@@ -6,25 +6,35 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
+    [Serializable]
     public class OutputNeuron : Neuron
     {
         public List<Axon> Inputs { get; set; }
         public override double Input { get { return CalculateInput(); } }
 
+        public OutputNeuron()
+        {
+            Inputs = new List<Axon>();
+        }
+
         private double CalculateInput()
         {
             double input;
 
-            input = 0;
-
-            int axonCount = Inputs.Count;
-
-            for (int neuronIndex = 0; neuronIndex < axonCount; neuronIndex++)
-            {
-                input += Inputs[neuronIndex].Input.Output * Inputs[neuronIndex].Weight;
-            }
+            input = Inputs.Sum(i => i.Input.Output * i.Weight);
 
             return input;
+        }
+
+        public Axon CreateAxon(Neuron neuron, double weight)
+        {
+            Axon axon;
+
+            axon = new Axon(neuron, weight);
+
+            Inputs.Add(axon);
+
+            return axon;
         }
     }
 }

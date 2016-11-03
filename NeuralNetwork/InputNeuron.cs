@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
+    [Serializable]
     public class InputNeuron : Neuron
     {
         public override double Input { get { return inputValue; } }
