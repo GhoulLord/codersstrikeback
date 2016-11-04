@@ -9,5 +9,9 @@ namespace NeuralNetwork
     [Serializable]
     public class HiddenNeuron : OutputNeuron
     {
+        public HiddenNeuron(string name)
+            : base(name)
+        {
+        }
     }
 }

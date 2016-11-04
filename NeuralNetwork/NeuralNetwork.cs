@@ -13,6 +13,8 @@ namespace NeuralNetwork
         public List<HiddenLayer> HiddenLayers { get; set; }
         public OutputLayer OutputLayer { get; set; }
 
+        private Random r = new Random();
+
         public NeuralNetwork()
         {
             InputLayer = null;
@@ -74,6 +76,57 @@ namespace NeuralNetwork
             }
 
             CreateFullConnectionsBetweenTwoLayers(layerBeforeCurrentLayer, OutputLayer);
+        }
+
+        private double MyRandom()
+        {
+            return r.NextDouble() - r.NextDouble();
+        }
+
+        private void InitInputLayerWithRandomValues()
+        {
+            foreach (var neuron in InputLayer.Neurons)
+            {
+                neuron.Bias = 3 * MyRandom();
+            }
+        }
+
+        private void InitHiddenLayerWithRandomValues(HiddenLayer layer)
+        {
+            foreach (var neuron in layer.Neurons.Cast<HiddenNeuron>())
+            {
+                neuron.Bias = 3 * MyRandom();
+
+                foreach (var axon in neuron.Inputs)
+                {
+                    axon.Weight = 3 * MyRandom();
+                }
+            }
+        }
+
+        private void InitHiddenLayersWithRandomValues()
+        {
+            HiddenLayers.ForEach(h => InitHiddenLayerWithRandomValues(h));
+        }
+
+        private void InitOutputLayerWithRandomValues()
+        {
+            foreach (var neuron in OutputLayer.Neurons.Cast<OutputNeuron>())
+            {
+                neuron.Bias = 3 * MyRandom();
+
+                foreach (var axon in neuron.Inputs)
+                {
+                    axon.Weight = 3 * MyRandom();
+                }
+            }
+        }
+
+        public void InitWithRandomValues()
+        {
+            InitInputLayerWithRandomValues();
+            InitHiddenLayersWithRandomValues();
+            InitOutputLayerWithRandomValues();
         }
 
         private void UpdateOutputLayerOutput()

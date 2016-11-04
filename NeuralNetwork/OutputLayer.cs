@@ -9,11 +9,11 @@ namespace NeuralNetwork
     [Serializable]
     public class OutputLayer : NeuronLayer<OutputNeuron>
     {
-        public override OutputNeuron CreateNeuron()
+        public override OutputNeuron CreateNeuron(string name)
         {
             OutputNeuron outputNeuron;
 
-            outputNeuron = new OutputNeuron();
+            outputNeuron = new OutputNeuron(name);
 
             Neurons.Add(outputNeuron);
 

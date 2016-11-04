@@ -12,8 +12,9 @@ namespace NeuralNetwork
         public List<Axon> Inputs { get; set; }
         public override double Input { get { return CalculateInput(); } }
 
-        public OutputNeuron()
+        public OutputNeuron(string name)
         {
+            Name = name;
             Inputs = new List<Axon>();
         }
 

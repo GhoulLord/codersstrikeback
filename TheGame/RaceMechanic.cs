@@ -242,6 +242,8 @@ namespace TheGame
 
             if (podRacerRaceState.CurrentCheckPoint == checkPoint)
             {
+                podRacerRaceState.CheckPointsReached++;
+
                 teamRaceState.Timeout = raceRules.TIMEOUT + 1;
 
                 if (checkPoint == arena.GetStartFinish())

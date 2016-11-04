@@ -8,6 +8,7 @@ namespace NeuralNetwork
 {
     public interface INeuron
     {
+        string Name { get; set; }
         double Bias { get; set; }
         double Output { get; }
         void UpdateOutput();

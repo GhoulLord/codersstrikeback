@@ -9,11 +9,11 @@ namespace NeuralNetwork
     [Serializable]
     public class HiddenLayer : NeuronLayer<HiddenNeuron>
     {
-        public override HiddenNeuron CreateNeuron()
+        public override HiddenNeuron CreateNeuron(string name)
         {
             HiddenNeuron hiddenNeuron;
 
-            hiddenNeuron = new HiddenNeuron();
+            hiddenNeuron = new HiddenNeuron(name);
 
             Neurons.Add(hiddenNeuron);
 

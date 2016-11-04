@@ -13,6 +13,11 @@ namespace NeuralNetwork
 
         private double inputValue { get; set; }
 
+        public InputNeuron(string name)
+        {
+            Name = name;
+        }
+
         public void SetInput(double input)
         {
             inputValue = input;

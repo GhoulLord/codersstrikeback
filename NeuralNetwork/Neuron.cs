@@ -9,10 +9,18 @@ namespace NeuralNetwork
     [Serializable]
     public abstract class Neuron : INeuron
     {
+        public string Name { get; set; }
         public double Bias { get; set; }
         public double Output { get; private set; }
 
         public abstract double Input { get; }
+
+        private double LogSigmoid(double z)
+        {
+            if (z < -20.0) return 0.0;
+            else if (z > 20.0) return 1.0;
+            else return 1.0 / (1.0 + Math.Exp(-z));
+        }
 
         public void UpdateOutput()
         {
@@ -22,9 +30,14 @@ namespace NeuralNetwork
 
             output += Bias;
 
-            output = 1.0 / (1.0 + Math.Exp(-output));
+            output = LogSigmoid(output);
 
             Output = output;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace TheGame
         public bool Failed { get; set; }
         public CheckPoint CurrentCheckPoint { get; set; }
         public int RoundsFinished { get; set; }
+        public int CheckPointsReached { get; set; }
 
         public PodRacerRaceState(PodRacer podRacer)
         {
@@ -25,6 +26,7 @@ namespace TheGame
             Failed = false;
             CurrentCheckPoint = null;
             RoundsFinished = 0;
+            CheckPointsReached = 0;
         }
 
         public static PodRacerRaceState CreateInterpolation(PodRacerRaceState a, PodRacerRaceState b, double fraction)
@@ -68,6 +70,7 @@ namespace TheGame
                 Failed = Failed,
                 CurrentCheckPoint = CurrentCheckPoint.Copy(),
                 RoundsFinished = RoundsFinished,
+                CheckPointsReached = CheckPointsReached
             };
 
             return copy;

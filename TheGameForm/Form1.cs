@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using TheGame;
 using Pilots;
+using NeuralNetwork;
 
 namespace TheGameForm
 {
@@ -26,6 +27,8 @@ namespace TheGameForm
 
         public Form1()
         {
+            bestNn = Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored7.bin");
+
             InitGame();
 
             InitializeComponent();
@@ -70,7 +73,7 @@ namespace TheGameForm
             podRacerA = game.CreatePodRacer(
                 teamA,
                 0,
-                new PilotC(),
+                new PilotC(bestNn),
                 new Vector(
                     5000,
                     1000
@@ -139,14 +142,6 @@ namespace TheGameForm
             UpdateUi(race.RaceState);
         }
 
-        private void DoNRounds(int rounds)
-        {
-            for (int round = 0; round < rounds; round++)
-            {
-                DoOneRound();
-            }
-        }
-
         int frameCounter = 0;
 
         private void buttonInitRaceSwapped_Click(object sender, EventArgs e)
@@ -190,27 +185,6 @@ namespace TheGameForm
             //}
         }
 
-        private void DoOneFrame()
-        {
-            //if (frameCounter == 0)
-            //{
-            //    game.SimulatePreRound();
-            //}
-
-            //game.SimulateRound(1.0 / 25);
-            //frameCounter++;
-
-            //if (frameCounter == 25)
-            //{
-            //    game.SimulatePostRound();
-            //    frameCounter = 0;
-            //}
-
-            //race.ExecuteRace();
-
-            //UpdateUi();
-        }
-
         private void buttonNext_Click(object sender, EventArgs e)
         {
             if (raceStates != null)
@@ -227,26 +201,22 @@ namespace TheGameForm
             }
         }
 
-        private void DoOneRound()
-        {
-            //Dictionary<Team, TeamRaceState> playerGameStates = game.GetGameState().PlayerGameStates;
-
-            //Dictionary<PodRacer, PodRacerRaceState> podRacerGameStates = game.GetGameState().PodRacerGameStates;
-
-            //podRacerGameStates[podRacers[teamA][0]].CurrentCommand = new PodRacerCommand() { Thrust = 100, Destination = podRacerGameStates[podRacers[teamA][0]].CurrentCheckPoint.Position };
-            //podRacerGameStates[podRacers[teamA][1]].CurrentCommand = new PodRacerCommand() { Thrust = 100, Destination = podRacerGameStates[podRacers[teamA][1]].CurrentCheckPoint.Position };
-            ////podRacerGameStates[podRacers[playerA][0]].Command = new PodRacerCommand() { Thrust = 100, Destination = new Vector(5000, 5000) };
-            ////podRacerGameStates[podRacers[playerA][1]].Command = new PodRacerCommand() { Thrust = 100, Destination = new Vector(5000, 5000) };
-            //podRacerGameStates[podRacers[teamB][0]].CurrentCommand = new PodRacerCommand() { Thrust = 100, Destination = podRacerGameStates[podRacers[teamB][0]].CurrentCheckPoint.Position };
-            //podRacerGameStates[podRacers[teamB][1]].CurrentCommand = new PodRacerCommand() { Thrust = 100, Destination = podRacerGameStates[podRacers[teamB][1]].CurrentCheckPoint.Position };
-
-            //for (int i = 0; i < 25; i++)
-            //{
-            //    DoOneFrame();
-            //}
-        }
-
         List<RaceState> raceStates = null;
+
+        private double CalculateScoreForPodRacer(PodRacer podRacer)
+        {
+            double score = 0;
+
+            PodRacerRaceState podRacerRaceState = race.RaceState.PodRacerRaceStates[podRacer];
+
+            score += podRacerRaceState.CheckPointsReached * 10000;
+
+            Vector vectorToCurrentCheckPoint = podRacer.Position - podRacerRaceState.CurrentCheckPoint.Position;
+
+            score += 10000 - Math.Min(vectorToCurrentCheckPoint.Length, 10000);
+
+            return score;
+        }
 
         private void buttonExecuteRace_Click(object sender, EventArgs e)
         {
@@ -261,6 +231,8 @@ namespace TheGameForm
 
             currentRaceRound = 0;
             currentRaceStateIndex = 0;
+
+            labelScore.Text = CalculateScoreForPodRacer(race.PodRacers[0]).ToString();
         }
 
         Task animationTask = null;
@@ -427,6 +399,82 @@ namespace TheGameForm
 
             buttonStartRace.Enabled = true;
             buttonStopRace.Enabled = false;
+        }
+
+        NeuralNetwork.NeuralNetwork bestNn = null;
+
+        private void SearchTask(CancellationToken cancellationToken)
+        {
+            RaceResult result;
+            double score = 0;
+
+            int generationsCount = 0;
+            double maxScore = -1;
+
+            while (score < 50000)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                generationsCount++;
+
+                InitGame();
+
+                result = race.ExecuteRace();
+
+                score = CalculateScoreForPodRacer(race.PodRacers[0]);
+
+                if (maxScore < score)
+                {
+                    maxScore = score;
+                    UpdateSearchData(score, generationsCount);
+                    Storage.WriteNeuralNetworkToFile(((PilotC)(race.PodRacers[0].Pilot)).nn, @"c:\temp\scored8.bin");
+                }
+            }
+
+            bestNn = Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored8.bin");
+        }
+
+        CancellationTokenSource searchTaskCancellationSource = null;
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            Task searchTask;
+
+            searchTaskCancellationSource = new CancellationTokenSource();
+
+            searchTask = Task.Factory.StartNew(() => { SearchTask(searchTaskCancellationSource.Token); }, searchTaskCancellationSource.Token);
+        }
+
+        private void UpdateSearchData(double score, int generationsCount)
+        {
+            if (labelScore.InvokeRequired)
+            {
+                labelScore.Invoke(new MethodInvoker(() => { UpdateSearchData(score, generationsCount); }));
+                return;
+            }
+
+            labelScore.Text = score.ToString();
+            labelGenerations.Text = generationsCount.ToString();
+        }
+
+        private void buttonNewGame_Click(object sender, EventArgs e)
+        {
+            InitGame();
+
+            raceStates = null;
+
+            race = game.CreateRace(0);
+
+            UpdateUi(race.RaceState);
+
+        }
+
+        private void buttonStopSearch_Click(object sender, EventArgs e)
+        {
+            searchTaskCancellationSource.Cancel();
         }
     }
 }

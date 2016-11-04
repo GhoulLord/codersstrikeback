@@ -11,7 +11,7 @@ namespace NeuralNetwork
     {
         public List<Neuron> Neurons { get; set; }
         
-        public abstract N CreateNeuron();
+        public abstract N CreateNeuron(string name);
 
         public NeuronLayer()
         {

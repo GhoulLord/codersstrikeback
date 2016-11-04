@@ -9,11 +9,11 @@ namespace NeuralNetwork
     [Serializable]
     public class InputLayer : NeuronLayer<InputNeuron>
     {
-        public override InputNeuron CreateNeuron()
+        public override InputNeuron CreateNeuron(string name)
         {
             InputNeuron inputNeuron;
 
-            inputNeuron = new InputNeuron();
+            inputNeuron = new InputNeuron(name);
 
             Neurons.Add(inputNeuron);
 

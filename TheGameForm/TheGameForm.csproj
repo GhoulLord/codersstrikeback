@@ -84,6 +84,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NeuralNetwork\NeuralNetwork.csproj">
+      <Project>{9c404f24-496f-42c0-8e2e-0d9116a0e5e7}</Project>
+      <Name>NeuralNetwork</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Pilots\Pilots.csproj">
       <Project>{dd480621-ee43-4bb3-a103-5870c59a152c}</Project>
       <Name>Pilots</Name>
