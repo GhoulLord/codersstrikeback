@@ -28,7 +28,7 @@ namespace TheGameForm
 
         public Form1()
         {
-            bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored10.bin");
+            //bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored12.bin");
 
             InitGame();
 
@@ -495,10 +495,13 @@ namespace TheGameForm
 
             for (int individualIndex = 0; individualIndex < 100; individualIndex++)
             {
-                population.Individuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
+                population.Individuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
             }
 
-            FillGenomWithWeights(population.Individuals[0].Genom, bestNn);
+            if (bestNn != null)
+            {
+                FillGenomWithWeights(population.Individuals[0].Genom, bestNn);
+            }
 
             RaceResult result;
             double score = 0;
@@ -506,16 +509,16 @@ namespace TheGameForm
             int generationsCount = 0;
             double maxScore = -1;
 
-            while (maxScore < 50000)
+            while (maxScore < (150000))
             {
+                generationsCount++;
+
                 foreach (var individual in population.Individuals)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
                         break;
                     }
-
-                    generationsCount++;
 
                     InitRace(individual);
 
@@ -528,19 +531,20 @@ namespace TheGameForm
                     if (maxScore < score)
                     {
                         maxScore = score;
-                        NeuralNetwork.Storage.WriteNeuralNetworkToFile(((PilotC)(race.PodRacers[0].Pilot)).nn, @"c:\temp\scored11.bin");
+                        UpdateSearchData(maxScore, generationsCount, population.AverageFitness());
+                        NeuralNetwork.Storage.WriteNeuralNetworkToFile(((PilotC)(race.PodRacers[0].Pilot)).nn, @"c:\temp\scored13.bin");
                     }
                 }
 
                 UpdateSearchData(maxScore, generationsCount, population.AverageFitness());
 
-                if (maxScore < 50000)
+                if (maxScore < (150000))
                 {
                     population.Breed();
                 }
             }
 
-            bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored11.bin");
+            bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored13.bin");
         }
 
         CancellationTokenSource searchTaskCancellationSource = null;
@@ -562,8 +566,8 @@ namespace TheGameForm
                 return;
             }
 
-            labelScore.Text = score.ToString();
-            labelScoreAverage.Text = avg.ToString();
+            labelScore.Text = score.ToString("N");
+            labelScoreAverage.Text = avg.ToString("N");
             labelGenerations.Text = generationsCount.ToString();
         }
 

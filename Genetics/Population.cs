@@ -56,16 +56,16 @@ namespace Genetics
             }
 
 
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
-            newIndividuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
 
             Individuals = newIndividuals;
 

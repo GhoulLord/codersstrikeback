@@ -19,7 +19,12 @@ namespace Pilots
         private InputNeuron inHeading;
         private InputNeuron inVelocityAngle;
         private InputNeuron inVelocityLength;
-        private InputNeuron inNextCheckpointAngle;
+        private InputNeuron inNextCheckpointAngle0;
+        private InputNeuron inNextCheckpointAngle1;
+        private InputNeuron inNextCheckpointAngle2;
+        private InputNeuron inNextCheckpointAngle3;
+        private InputNeuron inNextCheckpointAngle4;
+        private InputNeuron inNextCheckpointAngle5;
         private InputNeuron inNextCheckpointDistance;
 
         private OutputNeuron outHeading0;
@@ -46,8 +51,13 @@ namespace Pilots
             //inHeading = inputLayer.CreateNeuron("heading");
             //inVelocityAngle = inputLayer.CreateNeuron("v_angle");
             //inVelocityLength = inputLayer.CreateNeuron("v_length");
-            inNextCheckpointAngle = inputLayer.CreateNeuron("c_angle");
-            inNextCheckpointDistance = inputLayer.CreateNeuron("c_dist");
+            inNextCheckpointAngle0 = inputLayer.CreateNeuron("c_angle0");
+            inNextCheckpointAngle1 = inputLayer.CreateNeuron("c_angle1");
+            inNextCheckpointAngle2 = inputLayer.CreateNeuron("c_angle2");
+            inNextCheckpointAngle3 = inputLayer.CreateNeuron("c_angle3");
+            inNextCheckpointAngle4 = inputLayer.CreateNeuron("c_angle4");
+            inNextCheckpointAngle5 = inputLayer.CreateNeuron("c_angle5");
+            //inNextCheckpointDistance = inputLayer.CreateNeuron("c_dist");
 
             OutputLayer outputLayer = nn.CreateOutputLayer();
 
@@ -86,8 +96,13 @@ namespace Pilots
                 this.nn = nn;
 
 
-                inNextCheckpointAngle = (InputNeuron)nn.InputLayer.Neurons[0];
-                inNextCheckpointDistance = (InputNeuron)nn.InputLayer.Neurons[1];
+                inNextCheckpointAngle0 = (InputNeuron)nn.InputLayer.Neurons[0];
+                inNextCheckpointAngle1 = (InputNeuron)nn.InputLayer.Neurons[1];
+                inNextCheckpointAngle2 = (InputNeuron)nn.InputLayer.Neurons[2];
+                inNextCheckpointAngle3 = (InputNeuron)nn.InputLayer.Neurons[3];
+                inNextCheckpointAngle4 = (InputNeuron)nn.InputLayer.Neurons[4];
+                inNextCheckpointAngle5 = (InputNeuron)nn.InputLayer.Neurons[5];
+                //inNextCheckpointDistance = (InputNeuron)nn.InputLayer.Neurons[1];
 
                 outHeading0 = (OutputNeuron)nn.OutputLayer.Neurons[0];
                 outHeading1 = (OutputNeuron)nn.OutputLayer.Neurons[1];
@@ -123,12 +138,77 @@ namespace Pilots
                 RaceState.
                 PodRacerRaceStates[PodRacer].
                 CurrentCheckPoint;
-            
+
             //inHeading.SetInput(PodRacer.Heading / 360);
             //inVelocityAngle.SetInput(PodRacer.Velocity.GetAngle() / 360);
             //inVelocityLength.SetInput(Math.Min(PodRacer.Velocity.Length, 1000) / 1000);
-            inNextCheckpointAngle.SetInput(currentCheckPoint.Position.GetAngle(PodRacer.Position) / 360.0 - 180.0);
-            inNextCheckpointDistance.SetInput(Math.Min((PodRacer.Position - currentCheckPoint.Position).Length, 100000) / 100000);
+
+            Vector toCurrentCheckpoint = PodRacer.Position - currentCheckPoint.Position;
+            int angle = (int)Math.Round(PodRacer.Orientation.GetAngle(toCurrentCheckpoint));
+
+            if (angle < -18)
+            {
+                angle = -18;
+            }
+
+            if (angle > 18)
+            {
+                angle = 18;
+            }
+
+            angle = angle + 18;
+
+            if ((angle & 1) == 1)
+            {
+                inNextCheckpointAngle0.SetInput(1);
+            }
+            else
+            {
+                inNextCheckpointAngle0.SetInput(0);
+            }
+            if ((angle & 2) == 2)
+            {
+                inNextCheckpointAngle1.SetInput(1);
+            }
+            else
+            {
+                inNextCheckpointAngle1.SetInput(0);
+            }
+            if ((angle & 4) == 4)
+            {
+                inNextCheckpointAngle2.SetInput(1);
+            }
+            else
+            {
+                inNextCheckpointAngle2.SetInput(0);
+            }
+            if ((angle & 8) == 8)
+            {
+                inNextCheckpointAngle3.SetInput(1);
+            }
+            else
+            {
+                inNextCheckpointAngle3.SetInput(0);
+            }
+            if ((angle & 16) == 16)
+            {
+                inNextCheckpointAngle4.SetInput(1);
+            }
+            else
+            {
+                inNextCheckpointAngle4.SetInput(0);
+            }
+            if ((angle & 32) == 32)
+            {
+                inNextCheckpointAngle5.SetInput(1);
+            }
+            else
+            {
+                inNextCheckpointAngle5.SetInput(0);
+            }
+
+
+            //inNextCheckpointDistance.SetInput(Math.Min(toCurrentCheckpoint.Length, 100000) / 100000);
 
             nn.UpdateOutput();
 
@@ -147,7 +227,7 @@ namespace Pilots
             if (outHeading0.Output >= 0.5) heading += 1;
             if (outHeading1.Output >= 0.5) heading += 2;
             if (outHeading2.Output >= 0.5) heading += 4;
-            if (outHeading3.Output >= 0.5) heading += 7;
+            if (outHeading3.Output >= 0.5) heading += 8;
             if (outHeading4.Output >= 0.5) heading += 16;
             if (outHeading5.Output >= 0.5) heading += 32;
 
