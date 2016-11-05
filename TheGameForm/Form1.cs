@@ -12,6 +12,7 @@ using System.Diagnostics;
 using TheGame;
 using Pilots;
 using NeuralNetwork;
+using Genetics;
 
 namespace TheGameForm
 {
@@ -27,7 +28,7 @@ namespace TheGameForm
 
         public Form1()
         {
-            bestNn = Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored7.bin");
+            bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored10.bin");
 
             InitGame();
 
@@ -403,38 +404,143 @@ namespace TheGameForm
 
         NeuralNetwork.NeuralNetwork bestNn = null;
 
+        private void FillWeightsWithGenom(NeuralNetwork.NeuralNetwork nn, Genom genom)
+        {
+            int genIndex = 0;
+
+            foreach (var intputNeuron in nn.InputLayer.Neurons.Cast<InputNeuron>())
+            {
+                intputNeuron.Bias = genom.Gens[genIndex];
+                genIndex++;
+            }
+
+            foreach (var hiddenLayer in nn.HiddenLayers)
+            {
+                foreach (var hiddenNeuron in hiddenLayer.Neurons.Cast<HiddenNeuron>())
+                {
+                    hiddenNeuron.Bias = genom.Gens[genIndex];
+                    genIndex++;
+
+                    foreach (var axon in hiddenNeuron.Inputs)
+                    {
+                        axon.Weight = genom.Gens[genIndex];
+                        genIndex++;
+                    }
+                }
+            }
+
+            foreach (var outputNeuron in nn.OutputLayer.Neurons.Cast<OutputNeuron>())
+            {
+                outputNeuron.Bias = genom.Gens[genIndex];
+                genIndex++;
+
+                foreach (var axon in outputNeuron.Inputs)
+                {
+                    axon.Weight = genom.Gens[genIndex];
+                    genIndex++;
+                }
+            }
+        }
+
+        private void FillGenomWithWeights(Genom genom, NeuralNetwork.NeuralNetwork nn)
+        {
+            int genIndex = 0;
+
+            foreach (var intputNeuron in nn.InputLayer.Neurons.Cast<InputNeuron>())
+            {
+                genom.Gens[genIndex] = intputNeuron.Bias;
+                genIndex++;
+            }
+
+            foreach (var hiddenLayer in nn.HiddenLayers)
+            {
+                foreach (var hiddenNeuron in hiddenLayer.Neurons.Cast<HiddenNeuron>())
+                {
+                    genom.Gens[genIndex] = hiddenNeuron.Bias;
+                    genIndex++;
+
+                    foreach (var axon in hiddenNeuron.Inputs)
+                    {
+                        genom.Gens[genIndex] = axon.Weight;
+                        genIndex++;
+                    }
+                }
+            }
+
+            foreach (var outputNeuron in nn.OutputLayer.Neurons.Cast<OutputNeuron>())
+            {
+                genom.Gens[genIndex] = outputNeuron.Bias;
+                genIndex++;
+
+                foreach (var axon in outputNeuron.Inputs)
+                {
+                    genom.Gens[genIndex] = axon.Weight;
+                    genIndex++;
+                }
+            }
+        }
+
+        protected void InitRace(Individual individual)
+        {
+            race = game.CreateRace(0);
+
+            FillWeightsWithGenom(((PilotC)race.Teams[0].PodRacers[0].Pilot).nn, individual.Genom);
+        }
+
         private void SearchTask(CancellationToken cancellationToken)
         {
+            Population population;
+
+            population = new Population();
+
+            for (int individualIndex = 0; individualIndex < 100; individualIndex++)
+            {
+                population.Individuals.Add(new Individual(2 + 32 + 16 + 96 + 6));
+            }
+
+            FillGenomWithWeights(population.Individuals[0].Genom, bestNn);
+
             RaceResult result;
             double score = 0;
 
             int generationsCount = 0;
             double maxScore = -1;
 
-            while (score < 50000)
+            while (maxScore < 50000)
             {
-                if (cancellationToken.IsCancellationRequested)
+                foreach (var individual in population.Individuals)
                 {
-                    break;
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
+                    generationsCount++;
+
+                    InitRace(individual);
+
+                    result = race.ExecuteRace();
+
+                    score = CalculateScoreForPodRacer(race.PodRacers[0]);
+
+                    individual.Fitness = score;
+
+                    if (maxScore < score)
+                    {
+                        maxScore = score;
+                        NeuralNetwork.Storage.WriteNeuralNetworkToFile(((PilotC)(race.PodRacers[0].Pilot)).nn, @"c:\temp\scored11.bin");
+                    }
                 }
 
-                generationsCount++;
+                UpdateSearchData(maxScore, generationsCount, population.AverageFitness());
 
-                InitGame();
-
-                result = race.ExecuteRace();
-
-                score = CalculateScoreForPodRacer(race.PodRacers[0]);
-
-                if (maxScore < score)
+                if (maxScore < 50000)
                 {
-                    maxScore = score;
-                    UpdateSearchData(score, generationsCount);
-                    Storage.WriteNeuralNetworkToFile(((PilotC)(race.PodRacers[0].Pilot)).nn, @"c:\temp\scored8.bin");
+                    population.Breed();
                 }
             }
 
-            bestNn = Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored8.bin");
+            bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored11.bin");
         }
 
         CancellationTokenSource searchTaskCancellationSource = null;
@@ -448,15 +554,16 @@ namespace TheGameForm
             searchTask = Task.Factory.StartNew(() => { SearchTask(searchTaskCancellationSource.Token); }, searchTaskCancellationSource.Token);
         }
 
-        private void UpdateSearchData(double score, int generationsCount)
+        private void UpdateSearchData(double score, int generationsCount, double avg)
         {
             if (labelScore.InvokeRequired)
             {
-                labelScore.Invoke(new MethodInvoker(() => { UpdateSearchData(score, generationsCount); }));
+                labelScore.Invoke(new MethodInvoker(() => { UpdateSearchData(score, generationsCount, avg); }));
                 return;
             }
 
             labelScore.Text = score.ToString();
+            labelScoreAverage.Text = avg.ToString();
             labelGenerations.Text = generationsCount.ToString();
         }
 

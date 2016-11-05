@@ -127,8 +127,8 @@ namespace Pilots
             //inHeading.SetInput(PodRacer.Heading / 360);
             //inVelocityAngle.SetInput(PodRacer.Velocity.GetAngle() / 360);
             //inVelocityLength.SetInput(Math.Min(PodRacer.Velocity.Length, 1000) / 1000);
-            inNextCheckpointAngle.SetInput(currentCheckPoint.Position.GetAngle(PodRacer.Position) / 120);
-            inNextCheckpointDistance.SetInput(Math.Min((PodRacer.Position - currentCheckPoint.Position).Length, 100000) / 30000);
+            inNextCheckpointAngle.SetInput(currentCheckPoint.Position.GetAngle(PodRacer.Position) / 360.0 - 180.0);
+            inNextCheckpointDistance.SetInput(Math.Min((PodRacer.Position - currentCheckPoint.Position).Length, 100000) / 100000);
 
             nn.UpdateOutput();
 

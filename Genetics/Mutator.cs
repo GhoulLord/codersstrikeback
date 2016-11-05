@@ -14,7 +14,13 @@ namespace Genetics
         {
             Genom mutatedGenom = new Genom(genom);
 
-            mutatedGenom.Gens.ForEach(g => { if (r.NextDouble() < rate) g += (r.NextDouble() - r.NextDouble()) * strength; });
+            for (int genIndex = 0; genIndex < mutatedGenom.Gens.Count; genIndex++)
+            {
+                if (r.NextDouble() < rate)
+                {
+                    mutatedGenom.Gens [genIndex] += (r.NextDouble() - r.NextDouble()) * strength;
+                }
+            }
 
             return mutatedGenom;
         }

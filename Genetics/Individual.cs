@@ -12,10 +12,21 @@ namespace Genetics
         public Genom Genom { get; set; }
         public double Fitness { get; set; }
 
+        public Individual(int genomSize)
+        {
+            Fitness = 0;
+            Genom = new Genom(genomSize, 3);
+        }
+
         public Individual(Genom genom)
         {
             Fitness = 0;
             Genom = genom;
+        }
+
+        public override string ToString()
+        {
+            return Fitness.ToString();
         }
     }
 }

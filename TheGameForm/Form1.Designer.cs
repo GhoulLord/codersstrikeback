@@ -57,8 +57,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.labelGenerations = new System.Windows.Forms.Label();
             this.buttonNewGame = new System.Windows.Forms.Button();
-            this.gameArena = new TheGameForm.GameArena();
             this.buttonStopSearch = new System.Windows.Forms.Button();
+            this.gameArena = new TheGameForm.GameArena();
+            this.labelScoreAverage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -94,6 +95,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.labelTime);
             this.splitContainer1.Panel2.Controls.Add(this.labelBenchmark);
             this.splitContainer1.Panel2.Controls.Add(this.labelGenerations);
+            this.splitContainer1.Panel2.Controls.Add(this.labelScoreAverage);
             this.splitContainer1.Panel2.Controls.Add(this.labelScore);
             this.splitContainer1.Panel2.Controls.Add(this.labelRound);
             this.splitContainer1.Panel2.Controls.Add(this.label4);
@@ -373,14 +375,6 @@
             this.buttonNewGame.UseVisualStyleBackColor = true;
             this.buttonNewGame.Click += new System.EventHandler(this.buttonNewGame_Click);
             // 
-            // gameArena
-            // 
-            this.gameArena.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameArena.Location = new System.Drawing.Point(0, 0);
-            this.gameArena.Name = "gameArena";
-            this.gameArena.Size = new System.Drawing.Size(800, 676);
-            this.gameArena.TabIndex = 0;
-            // 
             // buttonStopSearch
             // 
             this.buttonStopSearch.Location = new System.Drawing.Point(100, 238);
@@ -390,6 +384,23 @@
             this.buttonStopSearch.Text = "stop search";
             this.buttonStopSearch.UseVisualStyleBackColor = true;
             this.buttonStopSearch.Click += new System.EventHandler(this.buttonStopSearch_Click);
+            // 
+            // gameArena
+            // 
+            this.gameArena.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gameArena.Location = new System.Drawing.Point(0, 0);
+            this.gameArena.Name = "gameArena";
+            this.gameArena.Size = new System.Drawing.Size(800, 676);
+            this.gameArena.TabIndex = 0;
+            // 
+            // labelScoreAverage
+            // 
+            this.labelScoreAverage.AutoSize = true;
+            this.labelScoreAverage.Location = new System.Drawing.Point(140, 184);
+            this.labelScoreAverage.Name = "labelScoreAverage";
+            this.labelScoreAverage.Size = new System.Drawing.Size(35, 13);
+            this.labelScoreAverage.TabIndex = 6;
+            this.labelScoreAverage.Text = "label2";
             // 
             // Form1
             // 
@@ -441,6 +452,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonNewGame;
         private System.Windows.Forms.Button buttonStopSearch;
+        private System.Windows.Forms.Label labelScoreAverage;
     }
 }
 
