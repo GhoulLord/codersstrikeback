@@ -60,6 +60,8 @@
             this.buttonNext = new System.Windows.Forms.Button();
             this.buttonInitRaceSwapped = new System.Windows.Forms.Button();
             this.buttonInitRace = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.labelBestRounds = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -94,6 +96,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.labelPlayerARounds);
             this.splitContainer1.Panel2.Controls.Add(this.labelTime);
             this.splitContainer1.Panel2.Controls.Add(this.labelBenchmark);
+            this.splitContainer1.Panel2.Controls.Add(this.labelBestRounds);
             this.splitContainer1.Panel2.Controls.Add(this.labelGenerations);
             this.splitContainer1.Panel2.Controls.Add(this.labelScoreAverage);
             this.splitContainer1.Panel2.Controls.Add(this.labelScore);
@@ -101,6 +104,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.label4);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
+            this.splitContainer1.Panel2.Controls.Add(this.label7);
             this.splitContainer1.Panel2.Controls.Add(this.label6);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
@@ -123,7 +127,7 @@
             // 
             // buttonStopSearch
             // 
-            this.buttonStopSearch.Location = new System.Drawing.Point(100, 238);
+            this.buttonStopSearch.Location = new System.Drawing.Point(100, 270);
             this.buttonStopSearch.Name = "buttonStopSearch";
             this.buttonStopSearch.Size = new System.Drawing.Size(75, 23);
             this.buttonStopSearch.TabIndex = 10;
@@ -133,7 +137,7 @@
             // 
             // buttonSearch
             // 
-            this.buttonSearch.Location = new System.Drawing.Point(6, 238);
+            this.buttonSearch.Location = new System.Drawing.Point(6, 270);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(75, 23);
             this.buttonSearch.TabIndex = 9;
@@ -402,6 +406,24 @@
             this.buttonInitRace.UseVisualStyleBackColor = true;
             this.buttonInitRace.Click += new System.EventHandler(this.buttonInitRace_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 231);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 13);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "rounds";
+            // 
+            // labelBestRounds
+            // 
+            this.labelBestRounds.AutoSize = true;
+            this.labelBestRounds.Location = new System.Drawing.Point(59, 231);
+            this.labelBestRounds.Name = "labelBestRounds";
+            this.labelBestRounds.Size = new System.Drawing.Size(35, 13);
+            this.labelBestRounds.TabIndex = 6;
+            this.labelBestRounds.Text = "label2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -453,6 +475,8 @@
         private System.Windows.Forms.Button buttonNewGame;
         private System.Windows.Forms.Button buttonStopSearch;
         private System.Windows.Forms.Label labelScoreAverage;
+        private System.Windows.Forms.Label labelBestRounds;
+        private System.Windows.Forms.Label label7;
     }
 }
 

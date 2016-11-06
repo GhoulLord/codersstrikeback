@@ -41,31 +41,31 @@ namespace Genetics
 
             newIndividuals.AddRange(individualsSortedByFitness.Take(10));
 
-            while (newIndividuals.Count < (Individuals.Count - 10))
+            while (newIndividuals.Count < Individuals.Count)
             {
                 Individual mum = GetRandomIndividualByFitnessProbability(individualsSortedByFitness, fitnessSum);
                 Individual dad = GetRandomIndividualByFitnessProbability(individualsSortedByFitness, fitnessSum);
 
                 Individual[] babies = Combinator.Combine(mum, dad);
 
-                Individual babyA = new Individual(Mutator.Mutate(babies[0].Genom, 0.1, 0.5));
-                Individual babyB = new Individual(Mutator.Mutate(babies[1].Genom, 0.1, 0.5));
+                Individual babyA = new Individual(Mutator.Mutate(babies[0].Genom, 0.04, 1));
+                Individual babyB = new Individual(Mutator.Mutate(babies[1].Genom, 0.04, 1));
 
                 newIndividuals.Add(babyA);
                 newIndividuals.Add(babyB);
             }
 
 
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
-            newIndividuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
+            //newIndividuals.Add(new Individual(11 + 11 * 16 + 16 + 16 * 6 + 6));
 
             Individuals = newIndividuals;
 

@@ -28,7 +28,7 @@ namespace TheGameForm
 
         public Form1()
         {
-            //bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored12.bin");
+            //bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored13.bin");
 
             InitGame();
 
@@ -47,9 +47,19 @@ namespace TheGameForm
                 new Vector(3000, 3000),
                 new Vector(10000, 1000),
                 new Vector(10000 - 1201, 1000),
+                new Vector(10000, 6000),
                 new Vector(5000, 6000),
-                new Vector(6000, 2000),
             };
+
+            //List<Vector> checkPointPositions = new List<Vector>()
+            //{
+            //    /* 16000x9000 */
+            //    new Vector(1000, 5000),
+            //    new Vector(4000, 8000),
+            //    new Vector(8000, 8000),
+            //    new Vector(11000, 5000),
+            //    new Vector(5000, 1000),
+            //};
 
             int checkPointIndex = 0;
 
@@ -208,6 +218,8 @@ namespace TheGameForm
         {
             double score = 0;
 
+            int checkPointsCount = race.Arena.CheckPoints.Count;
+
             PodRacerRaceState podRacerRaceState = race.RaceState.PodRacerRaceStates[podRacer];
 
             score += podRacerRaceState.CheckPointsReached * 10000;
@@ -215,6 +227,11 @@ namespace TheGameForm
             Vector vectorToCurrentCheckPoint = podRacer.Position - podRacerRaceState.CurrentCheckPoint.Position;
 
             score += 10000 - Math.Min(vectorToCurrentCheckPoint.Length, 10000);
+
+            if (podRacerRaceState.RoundsFinished == 3)
+            {
+                score += (checkPointsCount * 3 * 100 - race.RaceState.Round) * 10000;
+            }
 
             return score;
         }
@@ -495,7 +512,7 @@ namespace TheGameForm
 
             for (int individualIndex = 0; individualIndex < 100; individualIndex++)
             {
-                population.Individuals.Add(new Individual(6 + 6 * 16 + 16 + 16 * 6 + 6));
+                population.Individuals.Add(new Individual(17 + 17 * 32 + 32 + 32 * 32 + 32 + 32 * 32 + 32 + 32 * 13 + 13));
             }
 
             if (bestNn != null)
@@ -509,7 +526,7 @@ namespace TheGameForm
             int generationsCount = 0;
             double maxScore = -1;
 
-            while (maxScore < (150000))
+            while (true)
             {
                 generationsCount++;
 
@@ -531,20 +548,32 @@ namespace TheGameForm
                     if (maxScore < score)
                     {
                         maxScore = score;
-                        UpdateSearchData(maxScore, generationsCount, population.AverageFitness());
-                        NeuralNetwork.Storage.WriteNeuralNetworkToFile(((PilotC)(race.PodRacers[0].Pilot)).nn, @"c:\temp\scored13.bin");
+                        UpdateSearchData(maxScore, generationsCount, population.AverageFitness(), race.RaceState.Round);
+                        NeuralNetwork.Storage.WriteNeuralNetworkToFile(((PilotC)(race.PodRacers[0].Pilot)).nn, @"c:\temp\scored14.bin");
                     }
                 }
 
-                UpdateSearchData(maxScore, generationsCount, population.AverageFitness());
+                UpdateSearchData(generationsCount);
 
-                if (maxScore < (150000))
+                if (!cancellationToken.IsCancellationRequested)
                 {
                     population.Breed();
                 }
+                else
+                {
+                    break;
+                }
             }
 
-            bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored13.bin");
+            bestNn = NeuralNetwork.Storage.ReadNeuralNetworkFromFile(@"c:\temp\scored14.bin");
+
+            Individual bestIndividual;
+
+            bestIndividual = new Individual(17 + 17 * 32 + 32 + 32 * 32 + 32 + 32 * 32 + 32 + 32 * 13 + 13);
+
+            FillGenomWithWeights(bestIndividual.Genom, bestNn);
+
+            InitRace(bestIndividual);
         }
 
         CancellationTokenSource searchTaskCancellationSource = null;
@@ -558,16 +587,28 @@ namespace TheGameForm
             searchTask = Task.Factory.StartNew(() => { SearchTask(searchTaskCancellationSource.Token); }, searchTaskCancellationSource.Token);
         }
 
-        private void UpdateSearchData(double score, int generationsCount, double avg)
+        private void UpdateSearchData(double score, int generationsCount, double avg, int rounds)
         {
             if (labelScore.InvokeRequired)
             {
-                labelScore.Invoke(new MethodInvoker(() => { UpdateSearchData(score, generationsCount, avg); }));
+                labelScore.Invoke(new MethodInvoker(() => { UpdateSearchData(score, generationsCount, avg, rounds); }));
                 return;
             }
 
             labelScore.Text = score.ToString("N");
             labelScoreAverage.Text = avg.ToString("N");
+            labelGenerations.Text = generationsCount.ToString();
+            labelBestRounds.Text = rounds.ToString();
+        }
+
+        private void UpdateSearchData(int generationsCount)
+        {
+            if (labelScore.InvokeRequired)
+            {
+                labelScore.Invoke(new MethodInvoker(() => { UpdateSearchData(generationsCount); }));
+                return;
+            }
+
             labelGenerations.Text = generationsCount.ToString();
         }
 

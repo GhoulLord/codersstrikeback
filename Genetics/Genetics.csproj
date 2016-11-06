@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Combinator.cs" />
+    <Compile Include="Fitness.cs" />
     <Compile Include="Genom.cs" />
     <Compile Include="Individual.cs" />
     <Compile Include="Mutator.cs" />
